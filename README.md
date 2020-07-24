@@ -15,6 +15,16 @@ terraform apply
 ```
 If not set, required values will be asked for interactively. Input variables can be configured using any of the methods described in the [Terraform documentation](https://www.terraform.io/docs/configuration/variables.html#assigning-values-to-root-module-variables)
 
+This repository can also be used as a module alongisde other Terraform configuration.
+```hcl
+module "projectn" {
+    source = "git::https://gitlab.com/projectnn/terraform-projectn-aws-admin-server.git"
+    region = "us-east-2"
+    key_name = "ec2-ssh-key"
+    package_url = "https://s3.us-east-2.amazonaws.com/builds.projectn.co/2020-07-24-00-00-00/project-n-1.0.0_customer-1.x86_64.rpm"
+} 
+```
+
 ## Requirements
 
 | Name | Version |
