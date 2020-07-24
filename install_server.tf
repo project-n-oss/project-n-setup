@@ -43,7 +43,7 @@ resource "aws_instance" "admin" {
   instance_type               = "t2.micro"
   key_name                    = var.key_name
   security_groups             = [aws_security_group.ssh.name]
-  user_data                   = "#!/bin/bash\nsudo yum -y install ${var.package_url}"
+  user_data                   = "#!/bin/bash\nsudo yum -y install ${var.package_url}; aws configure set region ${var.region}"
 
   tags = {
     Name = "project-n-admin-server"
