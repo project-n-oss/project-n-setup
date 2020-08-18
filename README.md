@@ -12,6 +12,8 @@ The Project N installer package from `package_url` is installed on launch, and t
 
 Must have [Terraform v0.12](https://www.terraform.io/downloads.html) installed to use this module.
 
+AWS IAM Permission:
+
 ## Usage
 ```shell script
 git clone https://gitlab.com/projectn-oss/terraform-projectn-aws-admin-server.git

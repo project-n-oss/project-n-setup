@@ -24,3 +24,9 @@ variable "manage_vpc" {
   default     = true
   description = "Project N can automatically configure a VPC to launch into, but this requires elevated permissions. Set to false to disable these permissions if you would rather manually manage VPC resources"
 }
+
+variable "profile" {
+  type        = string
+  default     = "default"
+  description = "AWS profile to use for deployment"
+}
