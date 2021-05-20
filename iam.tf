@@ -1,6 +1,9 @@
-resource "aws_iam_role" "admin" {
-  name = "project-n-admin"
+resource "random_id" "random_suffix" {
+  byte_length = 4
+}
 
+resource "aws_iam_role" "admin" {
+  name               = "project-n-admin-${random_id.random_suffix.hex}"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -23,27 +26,30 @@ resource aws_iam_instance_profile "admin" {
 }
 
 resource "aws_iam_policy" "deploy" {
-  name   = "project-n-admin-deploy"
+  name   = "project-n-admin-deploy-${random_id.random_suffix.hex}"
   policy = data.aws_iam_policy_document.deploy.json
 }
 
 resource "aws_iam_policy" "vpc" {
-  count  = var.manage_vpc ? 1 : 0
+  count      = var.manage_vpc ? 1 : 0
 
-  name   = "project-n-admin-vpc-permissions"
-  policy = data.aws_iam_policy_document.vpc.json
+  name       = "project-n-admin-vpc-permissions-${random_id.random_suffix.hex}"
+  policy     = data.aws_iam_policy_document.vpc.json
+  # depends_on = [data.aws_iam_policy_document.vpc] # TODO
 }
 
 resource "aws_iam_role_policy_attachment" "admin-deploy" {
   policy_arn = aws_iam_policy.deploy.arn
   role       = aws_iam_role.admin.id
+  depends_on = [aws_iam_policy.deploy]  # TODO is this necessary
 }
 
 resource "aws_iam_role_policy_attachment" "admin-vpc" {
   count = var.manage_vpc ? 1 : 0
 
   policy_arn = aws_iam_policy.vpc[0].arn
-  role       = aws_iam_role.admin.id
+  role       = aws_iam_role.admin.name
+  depends_on = [aws_iam_policy.vpc]  # TODO is this necessary
 }
 
 data "aws_iam_policy_document" "deploy" {
