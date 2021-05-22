@@ -1,6 +1,5 @@
 // provider for the original account
 provider "aws" {
-  alias   = "aws" // this is the default provider
   profile = var.profile
   region  = var.region
 }
@@ -9,13 +8,11 @@ provider "aws" {
 
 // provider for the new account
 provider "aws" {
-  alias = "new"
-  // profile = "default"
-  region = var.region
+  alias   = "new"
+  profile = var.profile
+  region  = var.region
   assume_role {
-    role_arn     = "arn:aws:iam::${aws_organizations_account.account.arn}:role/ROLE_NAME"  // todo: is this var.organizational_iam_role_name ?
-    // session_name = "SESSION_NAME"
-    // external_id  = "EXTERNAL_ID"
+    role_arn = var.crunch_mode ? "arn:aws:iam::${module.account[0].account_id}:role/${var.organizational_iam_role_name}" : null
   }
 }
 

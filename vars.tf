@@ -1,7 +1,7 @@
 variable "crunch_mode" {
   type        = bool
   default     = false
-  description = "Prepare to crunch data, rather than just estimating savings"  // todo activate this
+  description = "Prepare to crunch data, rather than just estimating savings" // todo activate this
 }
 
 variable "region" {
@@ -63,10 +63,23 @@ variable "vpc_id" {
   description = "ID of the VPC of the applications you wish to connect to Bolt"
 }
 
+variable "subnet_cidrs" {
+  type        = list(string)
+  description = "CIDR Ranges to use for new subnet creation. Must be valid and available subranges of the VPC CIDR"
+  validation {
+    condition     = length(var.subnet_cidrs) == 2
+    error_message = "Exactly 2 subnets must be provided."
+  }
+}
+
 variable "availability_zones" {
-  type        = set(string)
+  type        = list(string)
   default     = []
   description = "Availability zones to create the subnets in. If default, uses every availability zone in the region. If not default, must include at least two availability zones formatted as a list of strings, e.g. [\"us-east-1a\", \"us-east-1b\"]"
+  validation {
+    condition     = length(var.availability_zones) == 2 || length(var.availability_zones) == 0
+    error_message = "If provided, must specify exactly 2 availability zones."
+  }
 }
 
 variable "dashboard_cidr_range" {
