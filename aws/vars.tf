@@ -11,7 +11,7 @@ variable "region" {
 
 variable "key_name" {
   type        = string
-  description = "AWS EC2 key pair to use when connecting to the admin server over SSH"
+  description = "Name of the AWS EC2 key pair to create and use for connecting to the admin server over SSH"
 }
 
 variable "package_url" {

@@ -13,6 +13,9 @@ variable "manage_vpc" {
 variable "region" {
   type = string
 }
+variable "profile" {
+  type = string
+}
 variable "crunch_mode" {
   type = bool
 }

@@ -6,6 +6,7 @@ module "admin-server" {
   package_url      = var.package_url
   ssh_access_cidrs = var.ssh_access_cidrs
   region           = var.region
+  profile          = var.profile
   crunch_mode      = false
 }
 
@@ -31,5 +32,6 @@ module "admin-server-new" {
   package_url      = var.package_url
   ssh_access_cidrs = var.ssh_access_cidrs
   region           = var.region
+  profile          = var.profile
   crunch_mode      = true
 }

@@ -20,7 +20,7 @@ resource "aws_iam_role" "admin" {
 EOF
 }
 
-resource aws_iam_instance_profile "admin" {
+resource "aws_iam_instance_profile" "admin" {
   name = aws_iam_role.admin.name
   role = aws_iam_role.admin.name
 }
@@ -31,17 +31,17 @@ resource "aws_iam_policy" "deploy" {
 }
 
 resource "aws_iam_policy" "vpc" {
-  count      = var.manage_vpc ? 1 : 0
+  count = var.manage_vpc ? 1 : 0
 
-  name       = "project-n-admin-vpc-permissions-${random_id.random_suffix.hex}"
-  policy     = data.aws_iam_policy_document.vpc.json
+  name   = "project-n-admin-vpc-permissions-${random_id.random_suffix.hex}"
+  policy = data.aws_iam_policy_document.vpc.json
   # depends_on = [data.aws_iam_policy_document.vpc] # TODO
 }
 
 resource "aws_iam_role_policy_attachment" "admin-deploy" {
   policy_arn = aws_iam_policy.deploy.arn
   role       = aws_iam_role.admin.id
-  depends_on = [aws_iam_policy.deploy]  # TODO is this necessary
+  depends_on = [aws_iam_policy.deploy] # TODO is this necessary
 }
 
 resource "aws_iam_role_policy_attachment" "admin-vpc" {
@@ -49,12 +49,12 @@ resource "aws_iam_role_policy_attachment" "admin-vpc" {
 
   policy_arn = aws_iam_policy.vpc[0].arn
   role       = aws_iam_role.admin.name
-  depends_on = [aws_iam_policy.vpc]  # TODO is this necessary
+  depends_on = [aws_iam_policy.vpc] # TODO is this necessary
 }
 
 data "aws_iam_policy_document" "deploy" {
   statement {
-    sid = "UnrestrictedResourcePermissions"
+    sid    = "UnrestrictedResourcePermissions"
     effect = "Allow"
     actions = [
       "acm:DescribeCertificate",
@@ -75,7 +75,7 @@ data "aws_iam_policy_document" "deploy" {
   }
 
   statement {
-    sid = "IAM"
+    sid    = "IAM"
     effect = "Allow"
     actions = [
       "iam:AddClientIDToOpenIDConnectProvider",
@@ -119,7 +119,7 @@ data "aws_iam_policy_document" "deploy" {
   }
 
   statement {
-    sid = "Autoscaling"
+    sid    = "Autoscaling"
     effect = "Allow"
     actions = [
       "autoscaling:AttachInstances",
@@ -135,7 +135,7 @@ data "aws_iam_policy_document" "deploy" {
   }
 
   statement {
-    sid = "S3"
+    sid    = "S3"
     effect = "Allow"
     actions = [
       "s3:*"
@@ -147,7 +147,7 @@ data "aws_iam_policy_document" "deploy" {
   }
 
   statement {
-    sid = "EKS"
+    sid    = "EKS"
     effect = "Allow"
     actions = [
       "eks:DescribeUpdate",
@@ -161,7 +161,7 @@ data "aws_iam_policy_document" "deploy" {
   }
 
   statement {
-    sid = "SQS"
+    sid    = "SQS"
     effect = "Allow"
     actions = [
       "sqs:AddPermission",
@@ -181,7 +181,7 @@ data "aws_iam_policy_document" "deploy" {
 
 data "aws_iam_policy_document" "vpc" {
   statement {
-    sid = "EC2InternetGateway"
+    sid    = "EC2InternetGateway"
     effect = "Allow"
     actions = [
       "ec2:CreateInternetGateway",
@@ -193,7 +193,7 @@ data "aws_iam_policy_document" "vpc" {
   }
 
   statement {
-    sid = "EC2NetworkInterface"
+    sid    = "EC2NetworkInterface"
     effect = "Allow"
     actions = [
       "ec2:CreateNetworkInterface",
@@ -205,7 +205,7 @@ data "aws_iam_policy_document" "vpc" {
   }
 
   statement {
-    sid = "EC2Route"
+    sid    = "EC2Route"
     effect = "Allow"
     actions = [
       "ec2:CreateRoute",
@@ -215,7 +215,7 @@ data "aws_iam_policy_document" "vpc" {
   }
 
   statement {
-    sid = "EC2RouteTable"
+    sid    = "EC2RouteTable"
     effect = "Allow"
     actions = [
       "ec2:CreateRouteTable",
@@ -227,7 +227,7 @@ data "aws_iam_policy_document" "vpc" {
   }
 
   statement {
-    sid = "EC2Subnet"
+    sid    = "EC2Subnet"
     effect = "Allow"
     actions = [
       "ec2:CreateSubnet",
@@ -240,7 +240,7 @@ data "aws_iam_policy_document" "vpc" {
   }
 
   statement {
-    sid = "EC2Vpc"
+    sid    = "EC2Vpc"
     effect = "Allow"
     actions = [
       "ec2:CreateVpc",
@@ -253,7 +253,7 @@ data "aws_iam_policy_document" "vpc" {
   }
 
   statement {
-    sid = "EC2SecurityGroups"
+    sid    = "EC2SecurityGroups"
     effect = "Allow"
     actions = [
       "ec2:CreateSecurityGroup",
