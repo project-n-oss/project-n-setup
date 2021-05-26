@@ -33,7 +33,7 @@ if [ -s $manual_var_file ]; then
   cp $manual_var_file $var_file
 else
   # Note that this will overwrite an existing var file.
-  cat "" > $var_file
+  echo "" > $var_file
   read -rp "Package URL to install: " package
   echo "package_url=\"$package\"" >> $var_file
   __PLATFORM_SPECIFIC_VARIABLE_SETUP__
@@ -52,13 +52,13 @@ terraform apply
 __PLATFORM_SPECIFIC_PRE_SSH_SETUP__
 
 # Retry until login is working
-until eval "$login_command --command='echo'"
+until eval "$test_command'echo'"
 do
   echo "Waiting for login permissions to propagate..."
   sleep 10
 done
 
-until eval "$login_command --command='command -v projectn >/dev/null'"
+until eval "$test_command'command -v projectn >/dev/null'"
 do
   echo "Waiting for the Project N package to finish installing..."
   sleep 10
