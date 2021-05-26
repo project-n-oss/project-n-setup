@@ -1,6 +1,7 @@
 locals {
-  instance_url = var.crunch_mode ? module.admin-server-new[0].instance_url : module.admin-server[0].instance_url
-  ssh_key      = var.crunch_mode ? module.admin-server-new[0].ssh_key : module.admin-server[0].ssh_key
+  create_ssh_key = var.ssh_key_name == ""
+  instance_url   = var.crunch_mode ? module.admin-server-new[0].instance_url : module.admin-server[0].instance_url
+  ssh_key        = local.create_ssh_key ? (var.crunch_mode ? module.admin-server-new[0].ssh_key : module.admin-server[0].ssh_key) : ""
 }
 
 output "ssh_command" {
@@ -11,4 +12,5 @@ output "ssh_command" {
 output "ssh_key" {
   value     = local.ssh_key
   sensitive = true
+  description = "The admin server ssh key"
 }

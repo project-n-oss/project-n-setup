@@ -5,6 +5,7 @@ resource "google_project" "project_n" {
   auto_create_network = true
   billing_account     = local.billing_account
   org_id              = local.org_id
+  labels              = {} # Will be created automatically if not set here
 }
 
 resource "google_project_service" "container" {

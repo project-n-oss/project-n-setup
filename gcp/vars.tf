@@ -6,6 +6,7 @@ variable "enable_write" {
 
 variable "current_project" {
   type        = string
+  default     = ""
   description = "GCP project from which to grab the billing account and organization information"
 }
 

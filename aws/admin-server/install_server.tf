@@ -49,21 +49,39 @@ resource "aws_instance" "admin" {
   associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.admin.name
   instance_type               = "t2.micro"
-  key_name                    = aws_key_pair.new.key_name
+  key_name                    = local.ssh_key_name
   security_groups             = [aws_security_group.ssh.name]
-  user_data                   = "#!/bin/bash\nsudo yum -y install ${var.package_url}; su ec2-user && aws configure set region ${var.region}"
+  user_data                   = <<EOF
+#!/bin/bash
+sudo yum -y install ${var.package_url}
+su ec2-user && aws configure set region ${var.region}
+if [ -n ${var.vpc_id} ]; then
+  mkdir -p /home/ec2-user/.project-n/aws/default/infrastructure
+  chmod -R 755 /home/ec2-user/.project-n
+  chown -R ec2-user /home/ec2-user/.project-n
+  echo vpc_id = \"${var.vpc_id}\" > /home/ec2-user/.project-n/aws/default/infrastructure/vpc.auto.tfvars
+fi
+EOF
 
   tags = {
     Name = "project-n-admin-server"
   }
+
+  depends_on = [aws_key_pair.new]
 }
 
-// When running in crunch mode, we'll need to bootstrap a new key for the admin server, since one won't exist yet
-// There may be a better way of doing this.
+locals {
+  create_ssh_key = var.ssh_key_name == ""
+  ssh_key_name   = local.create_ssh_key ? aws_key_pair.new[0].key_name : var.ssh_key_name
+}
+
 resource "tls_private_key" "new" {
+  count = local.create_ssh_key ? 1 : 0
   algorithm = "RSA"
 }
+
 resource "aws_key_pair" "new" {
-  key_name_prefix = var.key_name
-  public_key      = tls_private_key.new.public_key_openssh
+  count = local.create_ssh_key ? 1 : 0
+  key_name_prefix = "project-n-${random_id.random_suffix.hex}"
+  public_key      = tls_private_key.new[0].public_key_openssh
 }

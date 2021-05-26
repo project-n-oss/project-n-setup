@@ -16,5 +16,10 @@ variable "subnet_cidrs" {
 variable "availability_zones" {
   type = list(string)
 }
-
+variable "create_account" {
+  type = bool
+}
+variable "profile" {
+  type = string
+}
 

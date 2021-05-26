@@ -35,13 +35,11 @@ resource "aws_iam_policy" "vpc" {
 
   name   = "project-n-admin-vpc-permissions-${random_id.random_suffix.hex}"
   policy = data.aws_iam_policy_document.vpc.json
-  # depends_on = [data.aws_iam_policy_document.vpc] # TODO
 }
 
 resource "aws_iam_role_policy_attachment" "admin-deploy" {
   policy_arn = aws_iam_policy.deploy.arn
   role       = aws_iam_role.admin.id
-  depends_on = [aws_iam_policy.deploy] # TODO is this necessary
 }
 
 resource "aws_iam_role_policy_attachment" "admin-vpc" {
@@ -49,7 +47,6 @@ resource "aws_iam_role_policy_attachment" "admin-vpc" {
 
   policy_arn = aws_iam_policy.vpc[0].arn
   role       = aws_iam_role.admin.name
-  depends_on = [aws_iam_policy.vpc] # TODO is this necessary
 }
 
 data "aws_iam_policy_document" "deploy" {
@@ -65,6 +62,7 @@ data "aws_iam_policy_document" "deploy" {
       "ec2:CreateLaunchTemplate",
       "ec2:CreateSecurityGroup",
       "ec2:CreateTags",
+      "ec2:DeleteTags",
       "ec2:Describe*",
       "ec2:GetLaunchTemplateData",
       "ec2:RunInstances",
@@ -87,6 +85,10 @@ data "aws_iam_policy_document" "deploy" {
       "iam:CreatePolicyVersion",
       "iam:CreateRole",
       "iam:CreateServiceLinkedRole",
+      "iam:DeleteInstanceProfile",
+      "iam:DeletePolicy",
+      "iam:DeleteRole",
+      "iam:DetachRolePolicy",
       "iam:GetInstanceProfile",
       "iam:GetOpenIDConnectProvider",
       "iam:GetPolicy",
@@ -103,7 +105,9 @@ data "aws_iam_policy_document" "deploy" {
       "iam:PassRole",
       "iam:PutRolePermissionsBoundary",
       "iam:PutRolePolicy",
+      "iam:RemoveRoleFromInstanceProfile",
       "iam:TagRole",
+      "iam:TagOpenIDConnectProvider",
       "iam:UpdateAssumeRolePolicy"
     ]
     resources = [
@@ -234,7 +238,8 @@ data "aws_iam_policy_document" "vpc" {
       "ec2:AssociateSubnetCidrBlock",
       "ec2:DisassociateSubnetCidrBlock",
       "ec2:ModifySubnetAttribute",
-      "ec2:DeleteSubnet"
+      "ec2:DeleteSubnet",
+      "ec2:DescribeSubnets" # todo check if this fixed the ingress error
     ]
     resources = ["*"]
   }

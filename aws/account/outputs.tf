@@ -1,3 +1,4 @@
 output "account_id" {
-  value = aws_organizations_account.account.id
+  value = local.account_id
+  description = "The AWS account ID for the Project N account"
 }

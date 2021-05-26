@@ -4,7 +4,12 @@ resource "google_compute_instance" "admin" {
   zone                    = local.zone
   machine_type            = "n1-standard-1"
   metadata_startup_script = "sudo yum -y install ${var.package_url}"
-  depends_on              = [google_project_service.compute]
+  # labels, metadata, resource_policies, and tags are all set automatically, and may cause the server to be recreated.
+  labels            = {}
+  metadata          = {}
+  resource_policies = []
+  tags              = []
+  depends_on        = [google_project_service.compute]
 
   boot_disk {
     initialize_params {

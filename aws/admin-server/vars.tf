@@ -1,6 +1,3 @@
-variable "key_name" {
-  type = string
-}
 variable "package_url" {
   type = string
 }
@@ -18,4 +15,11 @@ variable "profile" {
 }
 variable "crunch_mode" {
   type = bool
+}
+variable "ssh_key_name" {
+  type = string
+}
+variable "vpc_id" {
+  type    = string
+  default = ""
 }

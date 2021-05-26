@@ -1,5 +1,5 @@
 provider "google" {
-  project = var.current_project
+  project = local.use_current_project_config ? null : var.current_project
   zone    = var.zone
 }
 

@@ -35,14 +35,6 @@ resource "google_organization_iam_custom_role" "project-n-role" {
   ] : [])
 }
 
-// the permissions below might not be adequate. if so, this block will have all required permissions:
-//resource "google_project_iam_member" "project_permissions" {
-//  role       = "roles/owner"
-//  project    = local.project
-//  member     = local.iam_member
-//  depends_on = [google_project.project_n]
-//}
-
 resource "google_project_iam_member" "project_permissions" {
   for_each = toset([
     "roles/container.admin",
@@ -58,14 +50,9 @@ resource "google_project_iam_member" "project_permissions" {
   depends_on = [google_project.project_n]
 }
 
-# TODO: i think it needs the ability to list and set pubsub iam policies in the new project
-# "pubsub.topics.getIamPolicy"
-
 resource "google_organization_iam_member" "viewer" {
   member     = local.iam_member
   org_id     = local.org_id
   role       = local.crunch_role_path
   depends_on = [google_organization_iam_custom_role.project-n-role]
 }
-
-
