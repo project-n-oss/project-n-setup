@@ -1,0 +1,87 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.42"
+    }
+  }
+}
+data "aws_vpcs" "default_vpc" {
+  filter {
+    name   = "isDefault"
+    values = [true]
+  }
+}
+
+data "aws_ami" "amazon-linux-2" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm*"]
+  }
+}
+
+resource "aws_security_group" "ssh" {
+  name        = "project-n-admin-ssh-access-${random_id.random_suffix.hex}"
+  description = "Allow SSH connections"
+  vpc_id      = tolist(data.aws_vpcs.default_vpc.ids)[0]
+
+  ingress {
+    description = "SSH Access"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = var.ssh_access_cidrs
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "admin" {
+  ami                         = data.aws_ami.amazon-linux-2.id
+  associate_public_ip_address = true
+  iam_instance_profile        = aws_iam_instance_profile.admin.name
+  instance_type               = "t2.micro"
+  key_name                    = local.ssh_key_name
+  security_groups             = [aws_security_group.ssh.name]
+  user_data                   = <<EOF
+#!/bin/bash
+sudo yum -y install ${var.package_url}
+su ec2-user && aws configure set region ${var.region}
+if [ -n ${var.vpc_id} ]; then
+  mkdir -p /home/ec2-user/.project-n/aws/default/infrastructure
+  chmod -R 755 /home/ec2-user/.project-n
+  chown -R ec2-user /home/ec2-user/.project-n
+  echo vpc_id = \"${var.vpc_id}\" > /home/ec2-user/.project-n/aws/default/infrastructure/vpc.auto.tfvars
+fi
+EOF
+
+  tags = {
+    Name = "project-n-admin-server"
+  }
+
+  depends_on = [aws_key_pair.new]
+}
+
+locals {
+  create_ssh_key = var.ssh_key_name == ""
+  ssh_key_name   = local.create_ssh_key ? aws_key_pair.new[0].key_name : var.ssh_key_name
+}
+
+resource "tls_private_key" "new" {
+  count = local.create_ssh_key ? 1 : 0
+  algorithm = "RSA"
+}
+
+resource "aws_key_pair" "new" {
+  count = local.create_ssh_key ? 1 : 0
+  key_name_prefix = "project-n-${random_id.random_suffix.hex}"
+  public_key      = tls_private_key.new[0].public_key_openssh
+}

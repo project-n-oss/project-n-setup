@@ -1,6 +1,9 @@
-resource "aws_iam_role" "admin" {
-  name = "project-n-admin"
+resource "random_id" "random_suffix" {
+  byte_length = 4
+}
 
+resource "aws_iam_role" "admin" {
+  name               = "project-n-admin-${random_id.random_suffix.hex}"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -17,20 +20,20 @@ resource "aws_iam_role" "admin" {
 EOF
 }
 
-resource aws_iam_instance_profile "admin" {
+resource "aws_iam_instance_profile" "admin" {
   name = aws_iam_role.admin.name
   role = aws_iam_role.admin.name
 }
 
 resource "aws_iam_policy" "deploy" {
-  name   = "project-n-admin-deploy"
+  name   = "project-n-admin-deploy-${random_id.random_suffix.hex}"
   policy = data.aws_iam_policy_document.deploy.json
 }
 
 resource "aws_iam_policy" "vpc" {
-  count  = var.manage_vpc ? 1 : 0
+  count = var.manage_vpc ? 1 : 0
 
-  name   = "project-n-admin-vpc-permissions"
+  name   = "project-n-admin-vpc-permissions-${random_id.random_suffix.hex}"
   policy = data.aws_iam_policy_document.vpc.json
 }
 
@@ -43,12 +46,12 @@ resource "aws_iam_role_policy_attachment" "admin-vpc" {
   count = var.manage_vpc ? 1 : 0
 
   policy_arn = aws_iam_policy.vpc[0].arn
-  role       = aws_iam_role.admin.id
+  role       = aws_iam_role.admin.name
 }
 
 data "aws_iam_policy_document" "deploy" {
   statement {
-    sid = "UnrestrictedResourcePermissions"
+    sid    = "UnrestrictedResourcePermissions"
     effect = "Allow"
     actions = [
       "acm:DescribeCertificate",
@@ -59,6 +62,7 @@ data "aws_iam_policy_document" "deploy" {
       "ec2:CreateLaunchTemplate",
       "ec2:CreateSecurityGroup",
       "ec2:CreateTags",
+      "ec2:DeleteTags",
       "ec2:Describe*",
       "ec2:GetLaunchTemplateData",
       "ec2:RunInstances",
@@ -69,7 +73,7 @@ data "aws_iam_policy_document" "deploy" {
   }
 
   statement {
-    sid = "IAM"
+    sid    = "IAM"
     effect = "Allow"
     actions = [
       "iam:AddClientIDToOpenIDConnectProvider",
@@ -81,6 +85,10 @@ data "aws_iam_policy_document" "deploy" {
       "iam:CreatePolicyVersion",
       "iam:CreateRole",
       "iam:CreateServiceLinkedRole",
+      "iam:DeleteInstanceProfile",
+      "iam:DeletePolicy",
+      "iam:DeleteRole",
+      "iam:DetachRolePolicy",
       "iam:GetInstanceProfile",
       "iam:GetOpenIDConnectProvider",
       "iam:GetPolicy",
@@ -97,7 +105,9 @@ data "aws_iam_policy_document" "deploy" {
       "iam:PassRole",
       "iam:PutRolePermissionsBoundary",
       "iam:PutRolePolicy",
+      "iam:RemoveRoleFromInstanceProfile",
       "iam:TagRole",
+      "iam:TagOpenIDConnectProvider",
       "iam:UpdateAssumeRolePolicy"
     ]
     resources = [
@@ -113,7 +123,7 @@ data "aws_iam_policy_document" "deploy" {
   }
 
   statement {
-    sid = "Autoscaling"
+    sid    = "Autoscaling"
     effect = "Allow"
     actions = [
       "autoscaling:AttachInstances",
@@ -129,7 +139,7 @@ data "aws_iam_policy_document" "deploy" {
   }
 
   statement {
-    sid = "S3"
+    sid    = "S3"
     effect = "Allow"
     actions = [
       "s3:*"
@@ -141,7 +151,7 @@ data "aws_iam_policy_document" "deploy" {
   }
 
   statement {
-    sid = "EKS"
+    sid    = "EKS"
     effect = "Allow"
     actions = [
       "eks:DescribeUpdate",
@@ -155,7 +165,7 @@ data "aws_iam_policy_document" "deploy" {
   }
 
   statement {
-    sid = "SQS"
+    sid    = "SQS"
     effect = "Allow"
     actions = [
       "sqs:AddPermission",
@@ -175,7 +185,7 @@ data "aws_iam_policy_document" "deploy" {
 
 data "aws_iam_policy_document" "vpc" {
   statement {
-    sid = "EC2InternetGateway"
+    sid    = "EC2InternetGateway"
     effect = "Allow"
     actions = [
       "ec2:CreateInternetGateway",
@@ -187,7 +197,7 @@ data "aws_iam_policy_document" "vpc" {
   }
 
   statement {
-    sid = "EC2NetworkInterface"
+    sid    = "EC2NetworkInterface"
     effect = "Allow"
     actions = [
       "ec2:CreateNetworkInterface",
@@ -199,7 +209,7 @@ data "aws_iam_policy_document" "vpc" {
   }
 
   statement {
-    sid = "EC2Route"
+    sid    = "EC2Route"
     effect = "Allow"
     actions = [
       "ec2:CreateRoute",
@@ -209,7 +219,7 @@ data "aws_iam_policy_document" "vpc" {
   }
 
   statement {
-    sid = "EC2RouteTable"
+    sid    = "EC2RouteTable"
     effect = "Allow"
     actions = [
       "ec2:CreateRouteTable",
@@ -221,20 +231,21 @@ data "aws_iam_policy_document" "vpc" {
   }
 
   statement {
-    sid = "EC2Subnet"
+    sid    = "EC2Subnet"
     effect = "Allow"
     actions = [
       "ec2:CreateSubnet",
       "ec2:AssociateSubnetCidrBlock",
       "ec2:DisassociateSubnetCidrBlock",
       "ec2:ModifySubnetAttribute",
-      "ec2:DeleteSubnet"
+      "ec2:DeleteSubnet",
+      "ec2:DescribeSubnets" # todo check if this fixed the ingress error
     ]
     resources = ["*"]
   }
 
   statement {
-    sid = "EC2Vpc"
+    sid    = "EC2Vpc"
     effect = "Allow"
     actions = [
       "ec2:CreateVpc",
@@ -247,7 +258,7 @@ data "aws_iam_policy_document" "vpc" {
   }
 
   statement {
-    sid = "EC2SecurityGroups"
+    sid    = "EC2SecurityGroups"
     effect = "Allow"
     actions = [
       "ec2:CreateSecurityGroup",
