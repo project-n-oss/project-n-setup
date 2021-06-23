@@ -9,14 +9,14 @@ no_deploy=0
 convert=0
 for arg in "$@"; do
   case "$arg" in
-    --manual-confirm) manual_confirm=1 ;;
-    --crunch) crunch_mode=1 ;;
-    --no-deploy) no_deploy=1 ;;
-    --convert) convert=1 ;;
-    *)
-      echo "Unrecognized argument: $arg"
-      exit 1
-      ;;
+  --manual-confirm) manual_confirm=1 ;;
+  --crunch) crunch_mode=1 ;;
+  --no-deploy) no_deploy=1 ;;
+  --convert) convert=1 ;;
+  *)
+    echo "Unrecognized argument: $arg"
+    exit 1
+    ;;
   esac
 done
 
@@ -34,11 +34,11 @@ __PLATFORM_SPECIFIC_CLI_SETUP__
 # -- Set up terraform ---------------------------------------------------------
 
 current_version=0.15.4
-echo $current_version > .terraform-version
+echo $current_version >.terraform-version
 
 install_tfenv() {
   git clone https://github.com/tfutils/tfenv.git ~/.tfenv
-  echo 'export PATH="$HOME/.tfenv/bin:$PATH"' >> ~/.profile
+  echo 'export PATH="$HOME/.tfenv/bin:$PATH"' >>~/.profile
   . ~/.profile
 }
 
@@ -70,17 +70,38 @@ if [ "$convert" == "1" ]; then
   cp $var_file $var_file.old
 fi
 
+#content = {
+#            'customer_id': flags.nenv['customer_id'],
+#            'from_version': flags.nenv['release_version'],
+#            'target': 'rpm'
+#        }
+#        if to_version is not None:
+#            content['to_version'] = to_version
+#
+#        resp = post(f"{flags.nenv['serverless_endpoint']}/latest-version", json=content)
+
+# TODO: this works, but the customer_id field needs to be set appropriately
+# serverless_endpoint="https://uycmtoytcc.execute-api.us-east-1.amazonaws.com/prod"
+# curl -X POST -H "Content-Type: application/json" --data '{"customer_id": "frame-io","from_version": "v0.0.0","target": "rpm"}' $serverless_endpoint/latest-version
+# response is:
+# {"package_url":"https://s3.us-east-2.amazonaws.com/builds.projectn.co/2021-05-13-15-12-16/project-n-frame-io-1.5.5.x86_64.rpm","version":"v1.5.5","update_infrastructure":true,"update_software":true,"data_cruncher_only":false,"yum_command":"downgrade","images":null}
+# if out is response, then this extracts just the url:
+# echo $out | grep -Eo '"package_url":.*?[^\\]",' | cut -d "\"" -f4
+# after installation, unclear if a new customer id should be configured, since that will make updating not work properly
+# to convert to connect apps, what changes need to be made?
+# if it's just disabling crunch limits, only need `projectn config delete-flagset crunch-limits-100gb`
+
 if [ "$new_deployment" -eq "1" ]; then
-  read -rp "Package URL to install: " package
-  cat > $var_file <<EOT
+  cat >$var_file <<EOT
 # Edit this file to customize the configuration.
 
 # URL of the Project N package to install on the admin server.
+# This package is custom-built for you and automatically included here.
 # WARNING: changes here force the admin server to be destroyed and recreated.
 # This may leave deployment resources stranded. After installation, the package
 # is updated automatically; if a manual update is required, instead of changing
 # this, run 'sudo yum -y reinstall <new-package>' in the admin server.
-package_url          = "$package"
+package_url          = "__PACKAGE_URL__"
 
 EOT
 fi
@@ -104,15 +125,13 @@ terraform apply "$tf_args"
 
 __PLATFORM_SPECIFIC_PRE_SSH_SETUP__
 
-until eval "$test_command'echo' >/dev/null" 2> log
-do
+until eval "$test_command'echo' >/dev/null" 2>log; do
   handle_ssh_errors "$(cat log)"
   echo "Waiting for login permissions to propagate..."
   sleep 10
 done
 
-until eval "$test_command'command -v projectn >/dev/null'" 2> log
-do
+until eval "$test_command'command -v projectn >/dev/null'" 2>log; do
   handle_ssh_errors "$(cat log)"
   echo "Waiting for the Project N package to finish installing..."
   sleep 10
