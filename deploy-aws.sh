@@ -1,3 +1,13 @@
+match='export PATH=~/.local/bin:\$PATH'
+until eval "$test_command'grep -q '\''$match'\'' /home/ec2-user/.bash_profile'" 2> log
+do
+  handle_ssh_errors "$(cat log)"
+  echo "Waiting for the AWS CLI to finish updating..."
+  sleep 10
+done
+
+rm log
+
 redirect_command="ssh -tt $(echo $test_command | cut -c4-)"
 
 if [ "$manual_confirm" -eq "1" ]; then

@@ -53,8 +53,10 @@ resource "aws_instance" "admin" {
   security_groups             = [aws_security_group.ssh.name]
   user_data                   = <<EOF
 #!/bin/bash
-sudo yum -y install ${var.package_url}
-su ec2-user && aws configure set region ${var.region}
+yum -y install ${var.package_url}
+su ec2-user -c 'pip3 install awscli awscli-plugin-bolt --user'
+echo 'export PATH=~/.local/bin:$PATH' >> /home/ec2-user/.bash_profile && chown ec2-user /home/ec2-user/.bash_profile
+su ec2-user -c 'source ~/.bash_profile && aws configure set region ${var.region} && aws configure set plugins.bolt awscli-plugin-bolt'
 if [ -n ${var.vpc_id} ]; then
   mkdir -p /home/ec2-user/.project-n/aws/default/infrastructure
   chmod -R 755 /home/ec2-user/.project-n
