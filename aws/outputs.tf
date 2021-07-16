@@ -14,3 +14,8 @@ output "ssh_key" {
   sensitive = true
   description = "The admin server ssh key"
 }
+
+output "account_id" {
+  value = var.crunch_mode ? module.account[0].account_id : ""
+  description = "The ID of the Project N AWS account"
+}
