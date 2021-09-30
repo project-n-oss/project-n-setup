@@ -57,12 +57,13 @@ yum -y install ${var.package_url}
 su ec2-user -c 'pip3 install awscli awscli-plugin-bolt --user'
 echo 'export PATH=~/.local/bin:$PATH' >> /home/ec2-user/.bash_profile && chown ec2-user /home/ec2-user/.bash_profile
 su ec2-user -c 'source ~/.bash_profile && aws configure set region ${var.region} && aws configure set plugins.bolt awscli-plugin-bolt'
+mkdir -p /home/ec2-user/.project-n/aws/default/infrastructure
+echo '{"default_platform":"aws"}' > /home/ec2-user/.project-n/config
 if [ -n ${var.vpc_id} ]; then
-  mkdir -p /home/ec2-user/.project-n/aws/default/infrastructure
-  chmod -R 755 /home/ec2-user/.project-n
-  chown -R ec2-user /home/ec2-user/.project-n
   echo vpc_id = \"${var.vpc_id}\" > /home/ec2-user/.project-n/aws/default/infrastructure/vpc.auto.tfvars
 fi
+chmod -R 755 /home/ec2-user/.project-n
+chown -R ec2-user /home/ec2-user/.project-n
 EOF
 
   tags = {
