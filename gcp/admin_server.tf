@@ -7,6 +7,8 @@ resource "google_compute_instance" "admin" {
 #!/bin/bash
 mkdir -p /home/projectn/.project-n
 echo '{"default_platform":"gcp"}' > /home/projectn/.project-n/config
+chmod -R 755 /home/projectn/.project-n
+chown -R projectn /home/projectn/.project-n/
 sudo yum -y install ${var.package_url}
   EOF
   # labels, metadata, resource_policies, and tags are all set automatically, and may cause the server to be recreated.
