@@ -33,4 +33,5 @@ locals {
   org_id           = var.org_id == "" ? data.google_project.current_project[0].org_id : var.org_id
   billing_account  = var.billing_account == "" ? data.google_billing_account.billing_account[0].id : var.billing_account
   crunch_role_path = "organizations/${local.org_id}/roles/projectNCrunch"
+  ssh_username     = "projectn"
 }
