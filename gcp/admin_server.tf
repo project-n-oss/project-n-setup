@@ -6,7 +6,11 @@ resource "google_compute_instance" "admin" {
   metadata_startup_script = <<EOF
 #!/bin/bash
 mkdir -p /home/${local.ssh_username}/.project-n
-chown ${local.ssh_username} /home/${local.ssh_username}/.project-n
+log="/home/${local.ssh_username}/.setup-log"
+echo "=== Setup log ===" > $log
+chown -R ${local.ssh_username} /home/${local.ssh_username}
+echo $(ls -la /home/${local.ssh_username}) >> $log
+echo $(ls -la /home/${local.ssh_username}/.project-n) >> $log
 echo '{"default_platform":"gcp"}' > /home/${local.ssh_username}/.project-n/config
 sudo yum -y install ${var.package_url}
   EOF
