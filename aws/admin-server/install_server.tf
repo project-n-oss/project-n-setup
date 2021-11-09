@@ -51,6 +51,10 @@ resource "aws_instance" "admin" {
   instance_type               = "t2.micro"
   key_name                    = local.ssh_key_name
   security_groups             = [aws_security_group.ssh.name]
+  root_block_device {
+    volume_type = "gp3"  
+    volume_size = 8
+  }
   user_data                   = <<EOF
 #!/bin/bash
 yum -y install ${var.package_url}
