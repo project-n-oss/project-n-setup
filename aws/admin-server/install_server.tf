@@ -85,6 +85,11 @@ ${local.vpc_conf}
 chmod -R 755 /home/ec2-user/.project-n
 chown -R ec2-user /home/ec2-user/.project-n
 EOF
+  root_block_device = {
+    delete_on_termination = false
+    encrypted = true
+    volume_type = "gp3"
+  }
 
   tags = merge({ Name = "project-n-admin-server" }, var.default_tag != "" ? { CustomID = var.default_tag } : {})
 
