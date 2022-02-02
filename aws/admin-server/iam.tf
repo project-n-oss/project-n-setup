@@ -67,7 +67,12 @@ data "aws_iam_policy_document" "deploy" {
       "ec2:GetLaunchTemplateData",
       "ec2:RunInstances",
       "eks:CreateCluster",
-      "eks:ListClusters"
+      "eks:ListClusters",
+      "logs:CreateLogGroup",
+      "logs:DescribeLogGroups",
+      "logs:DeleteLogGroup",
+      "logs:ListTagsLogGroup",
+      "logs:PutRetentionPolicy"
     ]
     resources = ["*"]
   }
