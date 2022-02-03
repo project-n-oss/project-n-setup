@@ -67,12 +67,7 @@ data "aws_iam_policy_document" "deploy" {
       "ec2:GetLaunchTemplateData",
       "ec2:RunInstances",
       "eks:CreateCluster",
-      "eks:ListClusters",
-      "logs:CreateLogGroup",
-      "logs:DescribeLogGroups",
-      "logs:DeleteLogGroup",
-      "logs:ListTagsLogGroup",
-      "logs:PutRetentionPolicy"
+      "eks:ListClusters"
     ]
     resources = ["*"]
   }
@@ -184,6 +179,21 @@ data "aws_iam_policy_document" "deploy" {
     ]
     resources = [
       "arn:aws:sqs:*:*:project-n-*"
+    ]
+  }
+
+  statement {
+    sid     = "logs"
+    effect  = "Allow"
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:DescribeLogGroups",
+      "logs:DeleteLogGroup",
+      "logs:ListTagsLogGroup",
+      "logs:PutRetentionPolicy"
+    ]
+    resources = [
+      "arn:aws:logs:*:*:log-group:/aws/eks/project-n*"
     ]
   }
 }
