@@ -193,7 +193,8 @@ data "aws_iam_policy_document" "deploy" {
       "logs:PutRetentionPolicy"
     ]
     resources = [
-      "arn:aws:logs:*:*:log-group:/aws/eks/project-n*"
+      "arn:aws:logs:*:*:log-group:/aws/eks/project-n*",
+      "arn:aws:logs:*:*:log-group::log-stream*"
     ]
   }
 }
