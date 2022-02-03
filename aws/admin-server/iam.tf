@@ -67,7 +67,14 @@ data "aws_iam_policy_document" "deploy" {
       "ec2:GetLaunchTemplateData",
       "ec2:RunInstances",
       "eks:CreateCluster",
-      "eks:ListClusters"
+      "eks:ListClusters",
+      "kms:CreateKey",
+      "kms:EnableKeyRotation",
+      "kms:DescribeKey",
+      "kms:GetKeyPolicy",
+      "kms:GetKeyRotationStatus",
+      "kms:ListResourceTags",
+      "kms:CreateGrant"
     ]
     resources = ["*"]
   }
@@ -157,7 +164,8 @@ data "aws_iam_policy_document" "deploy" {
       "eks:DescribeUpdate",
       "eks:DescribeCluster",
       "eks:UpdateClusterConfig",
-      "eks:UpdateClusterVersion"
+      "eks:UpdateClusterVersion",
+      "eks:AssociateEncryptionConfig"
     ]
     resources = [
       "arn:aws:eks:*:*:cluster/project-n-*"
