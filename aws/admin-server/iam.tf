@@ -181,6 +181,22 @@ data "aws_iam_policy_document" "deploy" {
       "arn:aws:sqs:*:*:project-n-*"
     ]
   }
+
+  statement {
+    sid     = "logs"
+    effect  = "Allow"
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:DescribeLogGroups",
+      "logs:DeleteLogGroup",
+      "logs:ListTagsLogGroup",
+      "logs:PutRetentionPolicy"
+    ]
+    resources = [
+      "arn:aws:logs:*:*:log-group:/aws/eks/project-n*",
+      "arn:aws:logs:*:*:log-group::log-stream*"
+    ]
+  }
 }
 
 data "aws_iam_policy_document" "vpc" {
