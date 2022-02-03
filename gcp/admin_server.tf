@@ -24,7 +24,7 @@ sudo yum -y install ${var.package_url} 2>> $log
 
   boot_disk {
     initialize_params {
-      image = "centos-cloud/centos-8"
+      image = "centos-cloud/centos-stream-8"
     }
   }
 
