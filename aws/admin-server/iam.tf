@@ -196,7 +196,6 @@ data "aws_iam_policy_document" "deploy" {
     actions = [
       "logs:CreateLogGroup",
       "logs:DescribeLogGroups",
-      "logs:DeleteLogGroup",
       "logs:ListTagsLogGroup",
       "logs:PutRetentionPolicy"
     ]
@@ -209,82 +208,52 @@ data "aws_iam_policy_document" "deploy" {
 
 data "aws_iam_policy_document" "vpc" {
   statement {
-    sid    = "EC2InternetGateway"
+    sid    = "VPC"
     effect = "Allow"
     actions = [
+      // Nat Gateways
+      "ec2:CreateNatGateway",
+      "ec2:DeleteNatGateway",
+      // Internet Gateways
       "ec2:CreateInternetGateway",
       "ec2:AttachInternetGateway",
       "ec2:DetachInternetGateway",
-      "ec2:DeleteInternetGateway"
-    ]
-    resources = ["*"]
-  }
-
-  statement {
-    sid    = "EC2NetworkInterface"
-    effect = "Allow"
-    actions = [
+      "ec2:DeleteInternetGateway",
+      // Network Interfaces
       "ec2:CreateNetworkInterface",
       "ec2:AttachNetworkInterface",
       "ec2:DetachNetworkInterface",
-      "ec2:DeleteNetworkInterface"
-    ]
-    resources = ["*"]
-  }
-
-  statement {
-    sid    = "EC2Route"
-    effect = "Allow"
-    actions = [
+      "ec2:DeleteNetworkInterface",
+      // Addresses
+      "ec2:AllocateAddress",
+      "ec2:AssociateAddress",
+      "ec2:DisassociateAddress",
+      "ec2:ReleaseAddress",
+      // Routes/Route Tables
       "ec2:CreateRoute",
-      "ec2:DeleteRoute"
-    ]
-    resources = ["*"]
-  }
-
-  statement {
-    sid    = "EC2RouteTable"
-    effect = "Allow"
-    actions = [
+      "ec2:DeleteRoute",
       "ec2:CreateRouteTable",
       "ec2:DeleteRouteTable",
       "ec2:AssociateRouteTable",
-      "ec2:DisassociateRouteTable"
-    ]
-    resources = ["*"]
-  }
-
-  statement {
-    sid    = "EC2Subnet"
-    effect = "Allow"
-    actions = [
+      "ec2:DisassociateRouteTable",
+      // VPC
+      "ec2:CreateVpc",
+      "ec2:AssociateVpcCidrBlock",
+      "ec2:DisassociateVpcCidrBlock",
+      "ec2:ModifyVpcAttribute",
+      "ec2:DeleteVpc",
+      // Subnets
       "ec2:CreateSubnet",
       "ec2:AssociateSubnetCidrBlock",
       "ec2:DisassociateSubnetCidrBlock",
       "ec2:ModifySubnetAttribute",
       "ec2:DeleteSubnet",
-      "ec2:DescribeSubnets" # todo check if this fixed the ingress error
-    ]
-    resources = ["*"]
-  }
-
-  statement {
-    sid    = "EC2Vpc"
-    effect = "Allow"
-    actions = [
-      "ec2:CreateVpc",
-      "ec2:AssociateVpcCidrBlock",
-      "ec2:DisassociateVpcCidrBlock",
-      "ec2:ModifyVpcAttribute",
-      "ec2:DeleteVpc"
-    ]
-    resources = ["*"]
-  }
-
-  statement {
-    sid    = "EC2SecurityGroups"
-    effect = "Allow"
-    actions = [
+      "ec2:DescribeSubnets",
+      // VPC Endpoints
+      "ec2:CreateVpcEndpoint",
+      "ec2:ModifyVpcEndpoint",
+      "ec2:DeleteVpcEndpoints",
+      // Security Groups
       "ec2:CreateSecurityGroup",
       "ec2:AuthorizeSecurityGroupIngress",
       "ec2:AuthorizeSecurityGroupEgress",
