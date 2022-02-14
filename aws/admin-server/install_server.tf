@@ -58,6 +58,7 @@ resource "aws_instance" "admin" {
   user_data                   = <<EOF
 #!/bin/bash
 yum -y install ${var.package_url}
+su ec2-user -c 'yum -y update'
 su ec2-user -c 'pip3 install awscli awscli-plugin-bolt --user'
 echo 'export PATH=~/.local/bin:$PATH' >> /home/ec2-user/.bash_profile && chown ec2-user /home/ec2-user/.bash_profile
 su ec2-user -c 'source ~/.bash_profile && aws configure set region ${var.region} && aws configure set plugins.bolt awscli-plugin-bolt'

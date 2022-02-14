@@ -14,6 +14,7 @@ echo $(ls -la /home/${local.ssh_username}) >> $log
 echo $(ls -la /home/${local.ssh_username}/.project-n) >> $log
 echo '{"default_platform":"gcp"}' > /home/${local.ssh_username}/.project-n/config 2>> $log
 sudo yum -y install ${var.package_url} 2>> $log
+sudo yum -y update
   EOF
   # labels, metadata, resource_policies, and tags are all set automatically, and may cause the server to be recreated.
   labels            = {}
