@@ -4,7 +4,7 @@ output "instance_url" {
 }
 
 output "ssh_key" {
-  value     = local.create_ssh_key ? tls_private_key.new[0].private_key_pem : ""
-  sensitive = true
+  value       = local.create_ssh_key ? tls_private_key.new[0].private_key_pem : ""
+  sensitive   = true
   description = "The admin server ssh key"
 }

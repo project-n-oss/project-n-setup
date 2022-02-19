@@ -6,6 +6,7 @@ terraform {
     }
   }
 }
+
 data "aws_vpcs" "default_vpc" {
   filter {
     name   = "isDefault"
@@ -52,10 +53,10 @@ resource "aws_instance" "admin" {
   key_name                    = local.ssh_key_name
   security_groups             = [aws_security_group.ssh.name]
   root_block_device {
-    volume_type = "gp3"  
+    volume_type = "gp3"
     volume_size = 8
   }
-  user_data                   = <<EOF
+  user_data = <<EOF
 #!/bin/bash
 yum -y update
 yum -y install ${var.package_url}
@@ -71,9 +72,8 @@ chmod -R 755 /home/ec2-user/.project-n
 chown -R ec2-user /home/ec2-user/.project-n
 EOF
 
-  tags = {
-    Name = "project-n-admin-server"
-  }
+  tags = merge({ Name = "project-n-admin-server" }, var.default_tag != "" ? { CustomID = var.default_tag } : {})
+
 
   depends_on = [aws_key_pair.new]
 }
@@ -84,12 +84,12 @@ locals {
 }
 
 resource "tls_private_key" "new" {
-  count = local.create_ssh_key ? 1 : 0
+  count     = local.create_ssh_key ? 1 : 0
   algorithm = "RSA"
 }
 
 resource "aws_key_pair" "new" {
-  count = local.create_ssh_key ? 1 : 0
+  count           = local.create_ssh_key ? 1 : 0
   key_name_prefix = "project-n-${random_id.random_suffix.hex}"
   public_key      = tls_private_key.new[0].public_key_openssh
 }

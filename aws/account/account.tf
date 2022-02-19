@@ -14,7 +14,7 @@ data "aws_organizations_organization" "account_info" {
 }
 
 resource "aws_organizations_account" "account" {
-  count = var.create_account ? 1 : 0
+  count     = var.create_account ? 1 : 0
   name      = var.account_name
   email     = var.account_email
   role_name = var.organizational_iam_role_name
@@ -111,7 +111,7 @@ resource "aws_ram_resource_share" "share_subnets" {
 resource "aws_ram_principal_association" "new_account_association" {
   principal          = local.account_id
   resource_share_arn = aws_ram_resource_share.share_subnets.arn
-  depends_on = [aws_organizations_account.account, null_resource.wait_for_account]
+  depends_on         = [aws_organizations_account.account, null_resource.wait_for_account]
 }
 
 resource "aws_ram_resource_association" "resource_association" {
