@@ -2,17 +2,17 @@ data "google_client_config" "current" {
 }
 
 data "google_project" "current_project" {
-  count = local.use_current_project_config ? 1 : 0
+  count      = local.use_current_project_config ? 1 : 0
   project_id = var.current_project
 }
 
 data "google_organization" "org" {
-  count = local.use_current_project_config ? 1 : 0
+  count        = local.use_current_project_config ? 1 : 0
   organization = data.google_project.current_project[0].org_id
 }
 
 data "google_billing_account" "billing_account" {
-  count = local.use_current_project_config ? 1 : 0
+  count           = local.use_current_project_config ? 1 : 0
   billing_account = data.google_project.current_project[0].billing_account
 }
 
@@ -26,7 +26,7 @@ resource "random_id" "random_suffix" {
 
 locals {
   use_current_project_config = var.current_project != ""
-  create_project  = var.project == ""
+  create_project             = var.project == ""
   // Note: GCP Project IDs are limited to 30 chars
   project          = local.create_project ? join("-", ["project-n", random_id.random_suffix.hex]) : var.project
   zone             = var.zone == "" ? data.google_client_config.current.zone : var.zone

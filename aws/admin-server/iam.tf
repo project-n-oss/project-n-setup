@@ -191,8 +191,8 @@ data "aws_iam_policy_document" "deploy" {
   }
 
   statement {
-    sid     = "logs"
-    effect  = "Allow"
+    sid    = "logs"
+    effect = "Allow"
     actions = [
       "logs:CreateLogGroup",
       "logs:DescribeLogGroups",

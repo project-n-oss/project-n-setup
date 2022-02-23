@@ -33,8 +33,8 @@ variable "profile" {
 }
 
 variable "ssh_key_name" {
-  type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Name of the key pair to use with the admin server. If not set, a new key pair is created."
 }
 
@@ -47,8 +47,8 @@ variable "account_name" {
 }
 
 variable "create_account" {
-  type = bool
-  default = true
+  type        = bool
+  default     = true
   description = "Whether to create an account from which to deploy Project N Bolt."
 }
 
@@ -56,6 +56,12 @@ variable "account_email" {
   type        = string
   default     = ""
   description = "Email of the AWS account to deploy Project N Bolt from. If create_account is true, a new account with this email will be created; in that case this must be an email you have access to."
+}
+
+variable "default_tag" {
+  type        = string
+  default     = "Project N Infrastructure"
+  description = "Default tag for infrastructure created by terraform on AWS."
 }
 
 variable "vpc_id" {
