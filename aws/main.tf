@@ -41,6 +41,7 @@ module "admin-server-new" {
   ssh_key_name     = var.ssh_key_name
   crunch_mode      = true
   vpc_id           = var.vpc_id
+  default_tag      = var.default_tag
 
   depends_on = [module.account]
 }

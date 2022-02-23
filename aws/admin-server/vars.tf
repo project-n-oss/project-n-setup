@@ -23,3 +23,9 @@ variable "vpc_id" {
   type    = string
   default = ""
 }
+
+variable "default_tag" {
+  type        = string
+  default     = "Project N Infrastructure"
+  description = "Default tag for infrastructure created by terraform on AWS."
+}
