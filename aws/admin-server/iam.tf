@@ -74,7 +74,10 @@ data "aws_iam_policy_document" "deploy" {
       "kms:GetKeyPolicy",
       "kms:GetKeyRotationStatus",
       "kms:ListResourceTags",
-      "kms:CreateGrant"
+      "kms:CreateGrant",
+      "kms:TagResource",
+      "kms:UntagResource",
+      "kms:ScheduleKeyDeletion"
     ]
     resources = ["*"]
   }
@@ -114,7 +117,13 @@ data "aws_iam_policy_document" "deploy" {
       "iam:PutRolePolicy",
       "iam:RemoveRoleFromInstanceProfile",
       "iam:TagRole",
+      "iam:UntagRole",
+      "iam:TagPolicy",
+      "iam:UntagPolicy",
+      "iam:TagInstanceProfile",
+      "iam:UntagInstanceProfile",
       "iam:TagOpenIDConnectProvider",
+      "iam:UntagOpenIDConnectProvider",
       "iam:UpdateAssumeRolePolicy"
     ]
     resources = [
@@ -165,7 +174,9 @@ data "aws_iam_policy_document" "deploy" {
       "eks:DescribeCluster",
       "eks:UpdateClusterConfig",
       "eks:UpdateClusterVersion",
-      "eks:AssociateEncryptionConfig"
+      "eks:AssociateEncryptionConfig",
+      "eks:TagResource",
+      "eks:UntagResource"
     ]
     resources = [
       "arn:aws:eks:*:*:cluster/project-n-*"
@@ -183,7 +194,8 @@ data "aws_iam_policy_document" "deploy" {
       "sqs:ListQueues",
       "sqs:ListQueueTags",
       "sqs:SetQueueAttributes",
-      "sqs:TagQueue"
+      "sqs:TagQueue",
+      "sqs:UntagQueue"
     ]
     resources = [
       "arn:aws:sqs:*:*:project-n-*"
@@ -197,7 +209,10 @@ data "aws_iam_policy_document" "deploy" {
       "logs:CreateLogGroup",
       "logs:DescribeLogGroups",
       "logs:ListTagsLogGroup",
-      "logs:PutRetentionPolicy"
+      "logs:PutRetentionPolicy",
+      "logs:TagLogGroup",
+      "logs:UntagLogGroup",
+      "logs:DeleteLogGroup"
     ]
     resources = [
       "arn:aws:logs:*:*:log-group:/aws/eks/project-n*",
@@ -259,7 +274,9 @@ data "aws_iam_policy_document" "vpc" {
       "ec2:AuthorizeSecurityGroupEgress",
       "ec2:RevokeSecurityGroupIngress",
       "ec2:RevokeSecurityGroupEgress",
-      "ec2:DeleteSecurityGroup"
+      "ec2:DeleteSecurityGroup",
+      "ec2:CreateTags",
+      "ec2:DeleteTags"
     ]
     resources = ["*"]
   }
