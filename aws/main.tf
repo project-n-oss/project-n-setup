@@ -8,6 +8,7 @@ module "admin-server" {
   profile          = var.profile
   ssh_key_name     = var.ssh_key_name
   crunch_mode      = false
+  default_tag      = var.default_tag
 }
 
 locals {
@@ -25,6 +26,7 @@ module "account" {
   organizational_iam_role_name = local.organizational_iam_role_name
   subnet_cidrs                 = var.subnet_cidrs
   vpc_id                       = var.vpc_id
+  default_tag                  = var.default_tag
 }
 
 module "admin-server-new" {
