@@ -9,6 +9,8 @@ module "admin-server" {
   ssh_key_name     = var.ssh_key_name
   crunch_mode      = false
   default_tag      = var.default_tag
+  vpc_id           = var.vpc_id
+  subnet_id        = var.admin_server_subnet_id
 }
 
 locals {
