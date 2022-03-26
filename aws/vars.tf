@@ -69,7 +69,11 @@ variable "vpc_id" {
   default     = ""
   description = "ID of the VPC of the applications you wish to connect to Bolt"
 }
-
+variable "admin_server_subnet_id" {
+  type        = string
+  default     = null
+  description = "ID of the subnet to deploy the admin server into"
+}
 variable "subnet_cidrs" {
   type        = list(string)
   default     = ["", ""]
