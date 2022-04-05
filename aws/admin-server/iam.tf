@@ -1,8 +1,13 @@
+locals {
+  create_role = var.iam_role == null
+}
+// always create new random ID to avoid reource name conflicts
 resource "random_id" "random_suffix" {
   byte_length = 4
 }
 
 resource "aws_iam_role" "admin" {
+  count              = local.create_role ? 1 : 0
   name               = "project-n-admin-${random_id.random_suffix.hex}"
   assume_role_policy = <<EOF
 {
@@ -21,35 +26,36 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "admin" {
-  name = aws_iam_role.admin.name
-  role = aws_iam_role.admin.name
+  name = local.create_role ? aws_iam_role.admin[0].name : "project-n-admin-${random_id.random_suffix.hex}"
+  role = local.create_role ? aws_iam_role.admin[0].name : var.iam_role
 }
 
 resource "aws_iam_policy" "deploy" {
+  count  = local.create_role ? 1 : 0
   name   = "project-n-admin-deploy-${random_id.random_suffix.hex}"
-  policy = data.aws_iam_policy_document.deploy.json
+  policy = data.aws_iam_policy_document.deploy[0].json
 }
 
 resource "aws_iam_policy" "vpc" {
-  count = var.manage_vpc ? 1 : 0
-
+  count  = local.create_role ? (var.manage_vpc ? 1 : 0) : 0
   name   = "project-n-admin-vpc-permissions-${random_id.random_suffix.hex}"
-  policy = data.aws_iam_policy_document.vpc.json
+  policy = data.aws_iam_policy_document.vpc[0].json
 }
 
 resource "aws_iam_role_policy_attachment" "admin-deploy" {
-  policy_arn = aws_iam_policy.deploy.arn
-  role       = aws_iam_role.admin.id
+  count      = local.create_role ? 1 : 0
+  policy_arn = aws_iam_policy.deploy[0].arn
+  role       = aws_iam_role.admin[0].id
 }
 
 resource "aws_iam_role_policy_attachment" "admin-vpc" {
-  count = var.manage_vpc ? 1 : 0
-
+  count      = local.create_role ? (var.manage_vpc ? 1 : 0) : 0
   policy_arn = aws_iam_policy.vpc[0].arn
-  role       = aws_iam_role.admin.name
+  role       = aws_iam_role.admin[0].name
 }
 
 data "aws_iam_policy_document" "deploy" {
+  count = local.create_role ? 1 : 0
   statement {
     sid    = "UnrestrictedResourcePermissions"
     effect = "Allow"
@@ -222,6 +228,7 @@ data "aws_iam_policy_document" "deploy" {
 }
 
 data "aws_iam_policy_document" "vpc" {
+  count = local.create_role ? 1 : 0
   statement {
     sid    = "VPC"
     effect = "Allow"
