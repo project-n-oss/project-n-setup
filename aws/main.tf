@@ -11,6 +11,7 @@ module "admin-server" {
   default_tag      = var.default_tag
   vpc_id           = var.vpc_id
   subnet_id        = var.admin_server_subnet_id
+  iam_role         = var.admin_server_iam_role
 }
 
 locals {

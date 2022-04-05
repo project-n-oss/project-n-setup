@@ -74,6 +74,12 @@ variable "admin_server_subnet_id" {
   default     = null
   description = "ID of the subnet to deploy the admin server into"
 }
+
+variable "admin_server_iam_role" {
+  type        = string
+  default     = null
+  description = "IAM role to attach to the admin server"
+}
 variable "subnet_cidrs" {
   type        = list(string)
   default     = ["", ""]
@@ -93,3 +99,5 @@ variable "availability_zones" {
     error_message = "If provided, must specify exactly 2 availability zones."
   }
 }
+
+ 

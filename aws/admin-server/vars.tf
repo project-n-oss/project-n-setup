@@ -27,7 +27,10 @@ variable "subnet_id" {
   type    = string
   default = null
 }
-
+variable "iam_role" {
+  type    = string
+  default = null
+}
 variable "default_tag" {
   type        = string
   default     = "Project N Infrastructure"
