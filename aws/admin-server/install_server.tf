@@ -57,6 +57,12 @@ resource "aws_security_group" "ssh" {
 }
 
 resource "aws_instance" "admin" {
+  provisioner "file" {
+    source      = "/tempfiles/pipeline.rpm"
+    destination = "/home/ec2-user/pipeline.rpm"
+  }
+  
+  
   ami                         = data.aws_ami.amazon-linux-2.id
   associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.admin.name
@@ -75,7 +81,7 @@ resource "aws_instance" "admin" {
   user_data = <<EOF
 #!/bin/bash
 yum -y update
-yum -y install ${var.package_url}
+yum -y install /home/ec2-user/pipeline.rpm #${var.package_url}
 su ec2-user -c 'pip3 install awscli awscli-plugin-bolt --user'
 echo 'export PATH=~/.local/bin:$PATH' >> /home/ec2-user/.bash_profile && chown ec2-user /home/ec2-user/.bash_profile
 su ec2-user -c 'source ~/.bash_profile && aws configure set region ${var.region} && aws configure set plugins.bolt awscli-plugin-bolt'
