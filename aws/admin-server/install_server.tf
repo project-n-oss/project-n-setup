@@ -35,6 +35,25 @@ data "aws_ami" "amazon-linux-2" {
   }
 }
 
+resource "aws_s3_bucket" "rpmbucket" {
+    bucket = "testawsrpmfile" 
+    acl = "private"   
+}
+
+resource "aws_s3_bucket_object" "object" {
+
+  bucket = aws_s3_bucket.rpmbucket.id
+
+  key    = "pipeline.rpm"
+
+  acl    = "public-read"
+
+  source = "/tempfiles/pipeline.rpm"
+
+  etag = filemd5("/tempfiles/pipeline.rpm")
+
+}
+
 resource "aws_security_group" "ssh" {
   name        = "project-n-admin-ssh-access-${random_id.random_suffix.hex}"
   description = "Allow SSH connections"
@@ -75,7 +94,8 @@ resource "aws_instance" "admin" {
   user_data = <<EOF
 #!/bin/bash
 yum -y update
-yum -y install ${var.package_url}
+aws s3 cp s3://${aws_s3_bucket.rpmbucket.bucket}/pipeline.rpm .
+yum -y install /home/ec2-user/pipeline.rpm #${var.package_url}
 su ec2-user -c 'pip3 install awscli awscli-plugin-bolt --user'
 echo 'export PATH=~/.local/bin:$PATH' >> /home/ec2-user/.bash_profile && chown ec2-user /home/ec2-user/.bash_profile
 su ec2-user -c 'source ~/.bash_profile && aws configure set region ${var.region} && aws configure set plugins.bolt awscli-plugin-bolt'
