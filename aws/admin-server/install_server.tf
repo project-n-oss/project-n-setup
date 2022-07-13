@@ -20,11 +20,6 @@ data "aws_vpcs" "default_vpc" {
   }
 }
 
-data "aws_subnet" "admin_server_subnet" {
-  count = var.subnet_id == null ? 0 : 1
-  id    = var.subnet_id
-}
-
 data "aws_ami" "amazon-linux-2" {
   most_recent = true
   owners      = ["amazon"]
@@ -38,8 +33,8 @@ data "aws_ami" "amazon-linux-2" {
 resource "aws_security_group" "ssh" {
   name        = "project-n-admin-ssh-access-${random_id.random_suffix.hex}"
   description = "Allow SSH connections"
-  vpc_id      = coalescelist(data.aws_subnet.admin_server_subnet[*].vpc_id, tolist(data.aws_vpcs.default_vpc.ids))[0]
-
+  vpc_id      = coalescelist([var.vpc_id], tolist(data.aws_vpcs.default_vpc.ids))[0]
+  #TODO: get vpc id
   ingress {
     description = "SSH Access"
     from_port   = 22

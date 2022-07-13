@@ -69,6 +69,10 @@ variable "vpc_id" {
   default     = ""
   description = "ID of the VPC of the applications you wish to connect to Bolt"
 }
+variable "vpc_cidr" {
+  type    = string
+  default = "10.0.0.0/16"
+}
 variable "admin_server_subnet_id" {
   type        = string
   default     = null
