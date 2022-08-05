@@ -37,3 +37,9 @@ variable "package_url" {
   type        = string
   description = "URL of the Project N package to install on launch"
 }
+
+variable "credentials" {
+  type        = string
+  default = null
+  description = "(Optional) Either the path to or the contents of a service account key file in JSON format."
+}
