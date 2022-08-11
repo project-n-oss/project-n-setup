@@ -1,8 +1,19 @@
+resource "random_id" "admin_name_suffix" {
+  keepers = {
+    # Generate a new id if anything is changed which will create a new admin server
+    project = local.project
+    zone = local.zone
+    machine_type = var.admin_server_instance_type
+  }
+  byte_length = 3
+}
+
 resource "google_compute_instance" "admin" {
-  name                    = "project-n-admin-server"
+  name                    = "project-n-admin-server-${random_id.admin_name_suffix.hex}"
   project                 = local.project
   zone                    = local.zone
-  machine_type            = "n1-standard-1"
+  description             = "Project N cluster management instance."
+  machine_type            = var.admin_server_instance_type
   metadata_startup_script = <<EOF
 #!/bin/bash
 mkdir -p /home/${local.ssh_username}/.project-n
