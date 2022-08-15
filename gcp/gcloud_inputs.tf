@@ -25,10 +25,9 @@ resource "random_id" "random_suffix" {
 }
 
 locals {
-  use_current_project_config = var.current_project != ""
-  create_project             = var.project == ""
+  use_current_project_config = var.current_project != ""  # Only used to get billing and org info
   // Note: GCP Project IDs are limited to 30 chars
-  project          = local.create_project ? join("-", ["project-n", random_id.random_suffix.hex]) : var.project
+  project          = var.project == "" ? join("-", ["project-n", random_id.random_suffix.hex]) : var.project
   zone             = var.zone == "" ? data.google_client_config.current.zone : var.zone
   org_id           = var.org_id == "" ? data.google_project.current_project[0].org_id : var.org_id
   billing_account  = var.billing_account == "" ? data.google_billing_account.billing_account[0].id : var.billing_account

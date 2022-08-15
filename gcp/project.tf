@@ -1,5 +1,5 @@
 resource "google_project" "project_n" {
-  count               = local.create_project ? 1 : 0
+  count               = var.create_project ? 1 : 0
   name                = "Project N"
   project_id          = local.project
   auto_create_network = true
