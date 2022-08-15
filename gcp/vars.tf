@@ -37,3 +37,9 @@ variable "package_url" {
   type        = string
   description = "URL of the Project N package to install on launch"
 }
+
+variable "admin_server_instance_type" {
+  type        = string
+  description = "URL of the Project N package to install on launch"
+  default = "n1-standard-1"
+}

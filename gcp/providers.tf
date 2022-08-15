@@ -3,11 +3,23 @@ provider "google" {
   zone    = var.zone
 }
 
+provider "random" {
+  # Configuration options
+}
+
 terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
       version = "~> 3.68"
     }
+    random = {
+      source = "hashicorp/random"
+      version = "3.3.2"
+    }
   }
 }
+
+
+
+

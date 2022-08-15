@@ -1,10 +1,10 @@
 output "ssh_command" {
-  value       = "gcloud compute ssh ${local.ssh_username}@project-n-admin-server --project=${local.project} --zone=${local.zone}"
+  value       = "gcloud compute ssh ${local.ssh_username}@project-n-admin-server-${random_id.admin_name_suffix.hex} --project=${local.project} --zone=${local.zone}"
   description = "The command to ssh into the admin server"
 }
 
 output "scp_command" {
-  value       = "gcloud compute scp --project=${local.project} --zone=${local.zone} %s ${local.ssh_username}@project-n-admin-server:~"
+  value       = "gcloud compute scp --project=${local.project} --zone=${local.zone} %s ${local.ssh_username}@project-n-admin-server-${random_id.admin_name_suffix.hex}:~"
   description = "The command to copy files into the admin server"
 }
 
