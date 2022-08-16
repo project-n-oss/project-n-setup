@@ -7,13 +7,19 @@ variable "enable_write" {
 variable "current_project" {
   type        = string
   default     = ""
-  description = "GCP project from which to grab the billing account and organization information"
+  description = "Billing account and organization information obtained from this project if not specified otherwise"
 }
 
 variable "project" {
   type        = string
   default     = ""
-  description = "GCP project where the admin server will be created"
+  description = "Name of existing or new GCP project"
+}
+
+variable "create_project" {
+  type      = bool
+  default   = true
+  description = "Create a new project? Otherwise use an existing project"
 }
 
 variable "zone" {
