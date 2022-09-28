@@ -25,6 +25,11 @@ resource "google_organization_iam_custom_role" "project-n-role" {
     "storage.objects.list",
     "storage.objects.get",
     "monitoring.timeSeries.list",
+    "bigquery.jobs.create",
+    "bigquery.readsessions.create",
+    "bigquery.readsessions.getData",
+    "bigquery.tables.get",
+    "bigquery.tables.getData"
     ], var.enable_write ? [
     "storage.buckets.create",
     "storage.buckets.delete",
@@ -32,13 +37,7 @@ resource "google_organization_iam_custom_role" "project-n-role" {
     "storage.objects.create",
     "storage.objects.delete",
     "storage.objects.update",
-    ] : [], [
-    "bigquery.jobs.create",
-    "bigquery.readsessions.create",
-    "bigquery.readsessions.getData",
-    "bigquery.tables.get",
-    "bigquery.tables.getData"
-  ])
+  ] : [])
 }
 
 resource "google_project_iam_member" "project_permissions" {
