@@ -13,7 +13,7 @@ resource "google_organization_iam_custom_role" "project-n-role" {
   org_id      = var.org_id
   title       = "Project N Storage Access"
   stage       = "GA"
-  description = "Provides read access to all storage resources for Project N deployments"
+  description = "Provides read access to all storage resources, and read only query access to bigquery dataset table/view for Project N deployments"
   permissions = concat([
     "resourcemanager.projects.get",
     "resourcemanager.projects.list",
@@ -25,6 +25,11 @@ resource "google_organization_iam_custom_role" "project-n-role" {
     "storage.objects.list",
     "storage.objects.get",
     "monitoring.timeSeries.list",
+    "bigquery.jobs.create",
+    "bigquery.readsessions.create",
+    "bigquery.readsessions.getData",
+    "bigquery.tables.get",
+    "bigquery.tables.getData",
     ], var.enable_write ? [
     "storage.buckets.create",
     "storage.buckets.delete",
