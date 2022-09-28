@@ -29,7 +29,7 @@ resource "google_organization_iam_custom_role" "project-n-role" {
     "bigquery.readsessions.create",
     "bigquery.readsessions.getData",
     "bigquery.tables.get",
-    "bigquery.tables.getData"
+    "bigquery.tables.getData",
     ], var.enable_write ? [
     "storage.buckets.create",
     "storage.buckets.delete",
