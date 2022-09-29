@@ -146,6 +146,7 @@ data "aws_iam_policy_document" "deploy" {
       "autoscaling:AttachInstances",
       "autoscaling:CreateOrUpdateTags",
       "autoscaling:CreateAutoScalingGroup",
+      "autoscaling:DeleteAutoScalingGroup",
       "autoscaling:SetDesiredCapacity",
       "autoscaling:SuspendProcesses",
       "autoscaling:UpdateAutoScalingGroup"
