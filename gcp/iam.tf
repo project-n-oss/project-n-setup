@@ -37,6 +37,12 @@ resource "google_organization_iam_custom_role" "project-n-role" {
     "storage.objects.create",
     "storage.objects.delete",
     "storage.objects.update",
+  ] : [], var.enable_hawkeye ? [
+    "cloudasset.assets.analyzeIamPolicy",
+    "cloudasset.assets.searchAllIamPolicies",
+    "cloudasset.assets.searchAllResources",
+    "iam.roles.get",
+    "serviceusage.services.use",
   ] : [])
 }
 

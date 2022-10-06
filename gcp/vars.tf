@@ -4,6 +4,12 @@ variable "enable_write" {
   description = "Grant write permissions"
 }
 
+variable "enable_hawkeye" {
+  type        = bool
+  default     = false
+  description = "Grant Hawkeye permissions"
+}
+
 variable "current_project" {
   type        = string
   default     = ""
