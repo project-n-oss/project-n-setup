@@ -42,7 +42,7 @@ resource "google_organization_iam_custom_role" "project-n-role" {
     "storage.objects.create",
     "storage.objects.delete",
     "storage.objects.update",
-  ])
+  ] : [])
 }
 
 resource "google_project_iam_member" "project_permissions" {
