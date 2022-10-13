@@ -30,6 +30,11 @@ resource "google_organization_iam_custom_role" "project-n-role" {
     "bigquery.readsessions.getData",
     "bigquery.tables.get",
     "bigquery.tables.getData",
+    "cloudasset.assets.analyzeIamPolicy",
+    "cloudasset.assets.searchAllIamPolicies",
+    "cloudasset.assets.searchAllResources",
+    "iam.roles.get",
+    "serviceusage.services.use",
     ], var.enable_write ? [
     "storage.buckets.create",
     "storage.buckets.delete",

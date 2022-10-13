@@ -49,3 +49,11 @@ resource "google_project_service" "pubsub" {
   disable_on_destroy = false
   depends_on         = [google_project.project_n]
 }
+
+resource "google_project_service" "cloudasset" {
+  project            = local.project
+  service            = "cloudasset.googleapis.com"
+  disable_on_destroy = false
+  depends_on         = [google_project.project_n]
+}
+
