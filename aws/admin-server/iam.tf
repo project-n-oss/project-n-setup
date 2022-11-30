@@ -60,6 +60,7 @@ data "aws_iam_policy_document" "deploy" {
       "autoscaling:Describe*",
       "ec2:AssociateIamInstanceProfile",
       "ec2:CreateLaunchTemplate",
+      "ec2:CreateLaunchTemplateVersion",
       "ec2:CreateSecurityGroup",
       "ec2:CreateTags",
       "ec2:DeleteTags",
