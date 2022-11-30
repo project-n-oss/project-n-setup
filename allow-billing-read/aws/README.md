@@ -1,3 +1,3 @@
-|                                                    N/A                                                     |
-| :--------------------------------------------------------------------------------------------------------: |
-| Unlike GCP's BigQuery, no additional service permissions required for AWS to read the Project billing data |
+|                                                                         N/A                                                                         |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------: |
+| Unlike in GCP (BigQuery service for the billing), no additional service permissions required for the Bolt in AWS to read the Project N billing data |
