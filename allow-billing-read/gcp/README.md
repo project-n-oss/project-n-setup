@@ -12,7 +12,7 @@ This module automates the provisioning of the resources that required to allow a
 ```shell script
 git clone https://gitlab.com/projectn-oss/project-n-setup.git
 
-cd project-n-setup/patch/gcp
+cd project-n-setup/allow-billing-read/gcp
 
 terraform init && terraform apply \
     -var="bolt_project_id=[bolt-project-id]" \
