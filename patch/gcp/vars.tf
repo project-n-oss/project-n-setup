@@ -1,8 +1,3 @@
-variable "org_id" {
-  type        = string
-  default     = ""
-  description = "GCP org ID"
-}
 
 variable "bolt_project_id" {
   type        = string
