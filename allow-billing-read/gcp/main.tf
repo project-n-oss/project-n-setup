@@ -8,8 +8,8 @@ locals {
 }
 
 resource "google_project_iam_custom_role" "project-n-billing-data-role" {
-  role_id     = "projectNBillingData"
   project     = var.billing_project_id
+  role_id     = "projectNBillingData"
   title       = "Project N Billing Data Access"
   description = "To provide read only access to Project N billing data (bigquery dataset's table view, and destination/temporary table)"
   stage       = "GA"
@@ -19,16 +19,17 @@ resource "google_project_iam_custom_role" "project-n-billing-data-role" {
   ]
 }
 
-resource "google_bigquery_dataset_iam_member" "project-n-billing-reader" {
+resource "google_bigquery_table_iam_member" "project-n-billing-reader" {
+  project    = var.billing_project_id
   dataset_id = var.billing_dataset_id
+  table_id   = var.billing_projectn_view_id
   role       = google_project_iam_custom_role.project-n-billing-data-role.id
   member     = local.bolt_project_iam_member
-  project    = var.billing_project_id
 }
 
 resource "google_project_iam_custom_role" "project-n-billing-query-role" {
-  role_id     = "projectNBillingQuery"
   project     = var.bolt_project_id
+  role_id     = "projectNBillingQuery"
   title       = "Project N Billing Query Job and Readsessions Access"
   description = "To provide resources access to compute a query on bigquery dataset table view."
   permissions = [
