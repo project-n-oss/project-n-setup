@@ -16,8 +16,9 @@ cd project-n-setup/allow-billing-read/gcp
 
 terraform init && terraform apply \
     -var="bolt_project_id=[bolt-project-id]" \
-    -var="billing_dataset_id=[billing-dataset-id]" \
     -var="billing_project_id=[billing-project-id]" \
+    -var="billing_dataset_id=[billing-dataset-id]" \
+    -var="billing_projectn_view_id=[billing-projectn-view-id]" \
     -auto-approve
 ```
 
@@ -26,8 +27,7 @@ Before running the above command you've to replace the placeholders with actual 
 - bolt-project-id: This is project id where Project N's Bolt cluster running
 - billing-dataset-id: This is BigQuery dataset id to which Google Cloud Detailed Billing export is configured.
 - billing-project-id: This is project id of the BigQuery billing dataset.
-
-FYI: Billing dataset table view is also required to collect the Project N specific billing data periodically, but not here. The Terraform apply requires only the above mentioned three values.
+- billing-projectn-view-id: This is view id of authorized BigQuery view created to allow access to only the bolt-project-id billing information
 
 > Note: Assumption is that Google Cloud Billing export option 'Detailed usage cost' is already configured. If not please check the below `Links` section.
 
