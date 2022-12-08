@@ -279,7 +279,10 @@ data "aws_iam_policy_document" "vpc" {
       "ec2:RevokeSecurityGroupEgress",
       "ec2:DeleteSecurityGroup",
       "ec2:CreateTags",
-      "ec2:DeleteTags"
+      "ec2:DeleteTags",
+      // VPC Peering
+      "ec2:CreateVpcPeeringConnection",
+      "ec2:DeleteVpcPeeringConnection"
     ]
     resources = ["*"]
   }
