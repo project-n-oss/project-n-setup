@@ -57,6 +57,8 @@ data "aws_iam_policy_document" "deploy" {
       "acm:DescribeCertificate",
       "acm:ListTagsForCertificate",
       "acm:RequestCertificate",
+      "acm:ImportCertificate",
+      "acm:AddTagsToCertificate",
       "autoscaling:Describe*",
       "ec2:AssociateIamInstanceProfile",
       "ec2:CreateLaunchTemplate",
