@@ -172,6 +172,13 @@ data "aws_iam_policy_document" "deploy" {
   }
 
   statement {
+    sid       = "ListAllBuckets"
+    effect    = "Allow"
+    actions   = ["s3:ListAllMyBuckets"]
+    resources = ["*"]
+  }
+
+  statement {
     sid    = "EKS"
     effect = "Allow"
     actions = [
