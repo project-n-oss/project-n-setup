@@ -5,12 +5,12 @@ locals {
 }
 
 output "ssh_command" {
-  value       = "ssh -i ssh_key.pem ec2-user@${local.instance_url}"
+  value       = "ssh -o IdentitiesOnly=yes -i ssh_key.pem ec2-user@${local.instance_url}"
   description = "The command to ssh into the admin server"
 }
 
 output "scp_command" {
-  value = "scp -q -i ssh_key.pem %s ec2-user@${local.instance_url}:~"
+  value       = "scp -q -i ssh_key.pem %s ec2-user@${local.instance_url}:~"
   description = "The command to copy a file into the admin server"
 }
 
