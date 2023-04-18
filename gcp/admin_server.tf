@@ -1,8 +1,8 @@
 resource "random_id" "admin_name_suffix" {
   keepers = {
     # Generate a new id if anything is changed which will create a new admin server
-    project = local.project
-    zone = local.zone
+    project      = local.project
+    zone         = local.zone
     machine_type = var.admin_server_instance_type
   }
   byte_length = 3
@@ -25,6 +25,7 @@ echo $(ls -la /home/${local.ssh_username}) >> $log
 echo $(ls -la /home/${local.ssh_username}/.project-n) >> $log
 echo '{"default_platform":"gcp"}' > /home/${local.ssh_username}/.project-n/config 2>> $log
 sudo yum -y update
+sudo yum -y install jq 2>> $log
 sudo yum -y install ${var.package_url} 2>> $log
 sudo yum -y install google-cloud-sdk-gke-gcloud-auth-plugin 2>> $log
   EOF
