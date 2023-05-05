@@ -57,3 +57,14 @@ resource "google_project_service" "cloudasset" {
   depends_on         = [google_project.project_n]
 }
 
+resource "google_project_service" "service-usage" {
+  project            = var.project_id
+  service            = "serviceusage.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "service-dns" {
+  project            = var.project_id
+  service            = "dns.googleapis.com"
+  disable_on_destroy = false
+}
