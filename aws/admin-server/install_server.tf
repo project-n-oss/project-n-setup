@@ -26,8 +26,9 @@ data "aws_subnet" "admin_server_subnet" {
 }
 
 data "aws_ami" "amazon-linux-2" {
-  most_recent = true
-  owners      = ["amazon"]
+  most_recent  = true
+  owners       = ["amazon"]
+  architecture = "x86_64"
 
   filter {
     name   = "name"
