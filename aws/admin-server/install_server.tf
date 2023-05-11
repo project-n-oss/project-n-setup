@@ -36,7 +36,7 @@ data "aws_ami" "amazon-linux-2" {
 
   filter {
     name   = "architecture"
-    values = "x86_64"
+    values = ["x86_64"]
   }
 }
 
