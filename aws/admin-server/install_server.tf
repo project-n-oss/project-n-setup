@@ -83,7 +83,7 @@ yum -y update
 yum -y install ${var.package_url}
 su ec2-user -c 'pip3 install awscli==1.27.20 awscli-plugin-granica --user'
 echo 'export PATH=~/.local/bin:$PATH' >> /home/ec2-user/.bash_profile && chown ec2-user /home/ec2-user/.bash_profile
-su ec2-user -c 'source ~/.bash_profile && aws configure set region ${var.region} && aws configure set plugins.bolt awscli-plugin-granica'
+su ec2-user -c 'source ~/.bash_profile && aws configure set region ${var.region} && aws configure set plugins.granica awscli-plugin-granica'
 mkdir -p /home/ec2-user/.project-n/aws/default/infrastructure
 echo '{"default_platform":"aws"}' > /home/ec2-user/.project-n/config
 ${local.vpc_conf}
