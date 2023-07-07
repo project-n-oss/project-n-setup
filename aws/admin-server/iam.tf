@@ -128,7 +128,8 @@ data "aws_iam_policy_document" "deploy" {
       "iam:UntagInstanceProfile",
       "iam:TagOpenIDConnectProvider",
       "iam:UntagOpenIDConnectProvider",
-      "iam:UpdateAssumeRolePolicy"
+      "iam:UpdateAssumeRolePolicy",
+      "iam:UpdateOpenIDConnectProviderThumbprint"
     ]
     resources = [
       "arn:aws:iam::*:instance-profile/project-n-*",
@@ -188,15 +189,32 @@ data "aws_iam_policy_document" "deploy" {
       "eks:UpdateClusterVersion",
       "eks:AssociateEncryptionConfig",
       "eks:TagResource",
-      "eks:UntagResource",
+      "eks:UntagResource"
+    ]
+    resources = [
+      "arn:aws:eks:*:*:cluster/project-n-*"
+    ]
+  }
+
+  statement {
+    sid    = "EKSAddons"
+    effect = "Allow"
+    Actions = [
       "eks:CreateAddon",
       "eks:DeleteAddon",
       "eks:DescribeAddon",
       "eks:DescribeAddonVersions",
-      "eks:ListAddons"
+      "eks:DescribeAddonConfiguration",
+      "eks:ListAddons",
+      "eks:ListTagsForResource",
+      "eks:ListUpdates",
+      "eks:DescribeUpdate",
+      "eks:UpdateAddon",
+      "eks:TagResource",
+      "eks:UntagResource"
     ]
     resources = [
-      "arn:aws:eks:*:*:cluster/project-n-*"
+      "arn:aws:eks:*:*:addon/project-n-*/*/*"
     ]
   }
 
