@@ -188,7 +188,12 @@ data "aws_iam_policy_document" "deploy" {
       "eks:UpdateClusterVersion",
       "eks:AssociateEncryptionConfig",
       "eks:TagResource",
-      "eks:UntagResource"
+      "eks:UntagResource",
+      "eks:CreateAddon",
+      "eks:DeleteAddon",
+      "eks:DescribeAddon",
+      "eks:DescribeAddonVersions",
+      "eks:ListAddons"
     ]
     resources = [
       "arn:aws:eks:*:*:cluster/project-n-*"
