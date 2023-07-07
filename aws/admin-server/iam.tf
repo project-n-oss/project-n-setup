@@ -199,7 +199,7 @@ data "aws_iam_policy_document" "deploy" {
   statement {
     sid    = "EKSAddons"
     effect = "Allow"
-    Actions = [
+    actions = [
       "eks:CreateAddon",
       "eks:DeleteAddon",
       "eks:DescribeAddon",
