@@ -214,7 +214,7 @@ data "aws_iam_policy_document" "deploy" {
       "eks:UntagResource"
     ]
     resources = [
-      "*"
+      "arn:aws:eks:*:*:addon/project-n-*/*/*"
     ]
   }
 
