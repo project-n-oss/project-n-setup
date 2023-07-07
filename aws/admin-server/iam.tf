@@ -128,7 +128,8 @@ data "aws_iam_policy_document" "deploy" {
       "iam:UntagInstanceProfile",
       "iam:TagOpenIDConnectProvider",
       "iam:UntagOpenIDConnectProvider",
-      "iam:UpdateAssumeRolePolicy"
+      "iam:UpdateAssumeRolePolicy",
+      "iam:UpdateOpenIDConnectProviderThumbprint"
     ]
     resources = [
       "arn:aws:iam::*:instance-profile/project-n-*",
@@ -193,7 +194,10 @@ data "aws_iam_policy_document" "deploy" {
       "eks:DeleteAddon",
       "eks:DescribeAddon",
       "eks:DescribeAddonVersions",
-      "eks:ListAddons"
+      "eks:DescribeAddonConfiguration",
+      "eks:DescribeUpdate",
+      "eks:ListAddons",
+      "eks:UpdateAddon"
     ]
     resources = [
       "arn:aws:eks:*:*:cluster/project-n-*"
