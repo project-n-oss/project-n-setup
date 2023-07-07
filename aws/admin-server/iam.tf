@@ -206,11 +206,15 @@ data "aws_iam_policy_document" "deploy" {
       "eks:DescribeAddonVersions",
       "eks:DescribeAddonConfiguration",
       "eks:ListAddons",
+      "eks:ListTagsForResource",
+      "eks:ListUpdates",
       "eks:DescribeUpdate",
-      "eks:UpdateAddon"
+      "eks:UpdateAddon",
+      "eks:TagResource",
+      "eks:UntagResource"
     ]
     resources = [
-      "arn:aws:eks:*:*:cluster/project-n-*/*"
+      "*"
     ]
   }
 
