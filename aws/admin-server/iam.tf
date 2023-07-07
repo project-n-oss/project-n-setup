@@ -189,18 +189,28 @@ data "aws_iam_policy_document" "deploy" {
       "eks:UpdateClusterVersion",
       "eks:AssociateEncryptionConfig",
       "eks:TagResource",
-      "eks:UntagResource",
+      "eks:UntagResource"
+    ]
+    resources = [
+      "arn:aws:eks:*:*:cluster/project-n-*"
+    ]
+  }
+
+  statement {
+    sid    = "EKSAddons"
+    effect = "Allow"
+    Actions = [
       "eks:CreateAddon",
       "eks:DeleteAddon",
       "eks:DescribeAddon",
       "eks:DescribeAddonVersions",
       "eks:DescribeAddonConfiguration",
-      "eks:DescribeUpdate",
       "eks:ListAddons",
+      "eks:DescribeUpdate",
       "eks:UpdateAddon"
     ]
     resources = [
-      "arn:aws:eks:*:*:cluster/project-n-*"
+      "arn:aws:eks:*:*:cluster/project-n-*/*"
     ]
   }
 
