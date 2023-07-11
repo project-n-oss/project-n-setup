@@ -202,13 +202,9 @@ data "aws_iam_policy_document" "deploy" {
     actions = [
       "eks:CreateAddon",
       "eks:DeleteAddon",
-      "eks:DescribeAddon",
-      "eks:DescribeAddonVersions",
-      "eks:DescribeAddonConfiguration",
       "eks:ListAddons",
       "eks:ListTagsForResource",
       "eks:ListUpdates",
-      "eks:DescribeUpdate",
       "eks:UpdateAddon",
       "eks:TagResource",
       "eks:UntagResource"
@@ -217,6 +213,13 @@ data "aws_iam_policy_document" "deploy" {
       "arn:aws:eks:*:*:addon/project-n-*/*/*",
       "arn:aws:eks:*:*:cluster/project-n-*"
     ]
+  }
+
+  statement {
+    sid       = "EKSDescribe"
+    effect    = "Allow"
+    actions   = ["eks:Describe*"]
+    resources = ["*"]
   }
 
   statement {
