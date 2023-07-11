@@ -216,7 +216,7 @@ data "aws_iam_policy_document" "deploy" {
   }
 
   statement {
-    sid       = "EKSRead"
+    sid       = "EKSDescribe"
     effect    = "Allow"
     actions   = ["eks:Describe*"]
     resources = ["*"]
