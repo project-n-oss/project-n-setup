@@ -14,30 +14,17 @@ resource "google_organization_iam_custom_role" "project-n-role" {
   title       = "Project N Storage Access"
   stage       = "GA"
   description = "Provides read access to all storage resources, and read only query access to bigquery dataset table/view for Project N deployments"
-  permissions = concat([
+  permissions = [
     "resourcemanager.projects.get",
     "resourcemanager.projects.list",
     "resourcemanager.projects.getIamPolicy",
-    "storage.buckets.get",
-    "storage.buckets.list",
-    "storage.buckets.update",
-    "storage.buckets.getIamPolicy",
-    "storage.objects.list",
-    "storage.objects.get",
     "monitoring.timeSeries.list",
     "cloudasset.assets.analyzeIamPolicy",
     "cloudasset.assets.searchAllIamPolicies",
     "cloudasset.assets.searchAllResources",
     "iam.roles.get",
     "serviceusage.services.use",
-    ], var.enable_write ? [
-    "storage.buckets.create",
-    "storage.buckets.delete",
-    "storage.buckets.setIamPolicy",
-    "storage.objects.create",
-    "storage.objects.delete",
-    "storage.objects.update",
-  ] : [])
+  ]
 }
 
 resource "google_project_iam_member" "project_permissions" {
