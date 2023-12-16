@@ -35,8 +35,8 @@ gpgcheck=1
 repo_gpgcheck=0
 gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 EOM
-sudo dnf install -y google-cloud-cli
-sudo fnd install -y google-cloud-cli-gke-gcloud-auth-plugin
+sudo dnf install -y google-cloud-cli 2>> $log
+sudo dnf install -y google-cloud-cli-gke-gcloud-auth-plugin 2>> $log
 # sudo yum -y install google-cloud-sdk-gke-gcloud-auth-plugin 2>> $log
   EOF
   # labels, metadata, resource_policies, and tags are all set automatically, and may cause the server to be recreated.
