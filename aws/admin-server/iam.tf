@@ -318,7 +318,8 @@ data "aws_iam_policy_document" "vpc" {
       "ec2:DeleteTags",
       // VPC Peering
       "ec2:CreateVpcPeeringConnection",
-      "ec2:DeleteVpcPeeringConnection"
+      "ec2:DeleteVpcPeeringConnection",
+      "ec2:AcceptVpcPeeringConnection",
     ]
     resources = ["*"]
   }
