@@ -65,7 +65,7 @@ resource "aws_instance" "admin" {
   ami                         = data.aws_ami.amazon-linux-2.id
   associate_public_ip_address = true
   iam_instance_profile        = aws_iam_instance_profile.admin.name
-  instance_type               = "t2.small"
+  instance_type               = "t2.micro"
   key_name                    = local.ssh_key_name
   security_groups             = var.subnet_id == null ? [aws_security_group.ssh.name] : null
   vpc_security_group_ids      = var.subnet_id != null ? [aws_security_group.ssh.id] : null
