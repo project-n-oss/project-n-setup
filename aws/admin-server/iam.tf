@@ -311,6 +311,7 @@ data "aws_iam_policy_document" "vpc" {
       // VPC Endpoints
       "ec2:CreateVpcEndpoint",
       "ec2:CreateVpcEndpointServiceConfiguration",
+      "ec2:DeleteVpcEndpointServiceConfigurations",
       "ec2:ModifyVpcEndpointServicePermissions",
       "ec2:ModifyVpcEndpoint",
       "ec2:DeleteVpcEndpoints",
