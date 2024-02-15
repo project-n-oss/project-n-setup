@@ -82,7 +82,10 @@ data "aws_iam_policy_document" "deploy" {
       "kms:TagResource",
       "kms:UntagResource",
       "kms:ScheduleKeyDeletion",
-      "route53:*"
+      "route53:*",
+      "elasticloadbalancing:DescribeLoadBalancers",
+      "elasticloadbalancing:DescribeLoadBalancerAttributes",
+      "elasticloadbalancing:DescribeTags",
     ]
     resources = ["*"]
   }
@@ -307,6 +310,7 @@ data "aws_iam_policy_document" "vpc" {
       "ec2:DescribeSubnets",
       // VPC Endpoints
       "ec2:CreateVpcEndpoint",
+      "ec2:CreateVpcEndpointServiceConfiguration",
       "ec2:ModifyVpcEndpoint",
       "ec2:DeleteVpcEndpoints",
       // Security Groups
