@@ -16,6 +16,7 @@ resource "google_compute_instance" "admin" {
   machine_type            = var.admin_server_instance_type
   metadata_startup_script = <<EOF
 #!/bin/bash
+set -x
 mkdir -p /home/${local.ssh_username}/.project-n
 log="/home/${local.ssh_username}/.setup-log"
 echo "=== Setup log ===" > $log
