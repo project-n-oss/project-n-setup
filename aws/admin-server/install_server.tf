@@ -79,6 +79,7 @@ resource "aws_instance" "admin" {
   }
   user_data = <<EOF
 #!/bin/bash
+set -e
 yum -y update
 yum -y install ${var.package_url}
 sudo git clone https://github.com/ahmetb/kubectx /opt/kubectx
