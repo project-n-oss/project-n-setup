@@ -25,7 +25,6 @@ chown -R ${local.ssh_username} /home/${local.ssh_username} 2>> $log
 echo $(ls -la /home/${local.ssh_username}) >> $log
 echo $(ls -la /home/${local.ssh_username}/.project-n) >> $log
 echo '{"default_platform":"gcp"}' > /home/${local.ssh_username}/.project-n/config 2>> $log
-sudo yum -y update
 sudo yum -y install ${var.package_url} 2>> $log
 sudo tee -a /etc/yum.repos.d/google-cloud-sdk.repo << EOM
 [google-cloud-cli]
