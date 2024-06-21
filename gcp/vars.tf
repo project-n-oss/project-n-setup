@@ -47,5 +47,5 @@ variable "package_url" {
 variable "admin_server_instance_type" {
   type        = string
   description = "The admin server's instance type"
-  default     = "n2-standard-1"
+  default     = "n1-standard-1"
 }

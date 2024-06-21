@@ -11,7 +11,7 @@ variable "zone" {
 variable "instance_type" {
   type        = string
   description = "The admin server's instance type"
-  default     = "n2-standard-1"
+  default     = "n1-standard-1"
 }
 
 variable "boot_image" {
