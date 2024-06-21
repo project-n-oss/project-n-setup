@@ -47,7 +47,7 @@ sudo dnf install -y google-cloud-cli-gke-gcloud-auth-plugin 2>> $log
 
   boot_disk {
     initialize_params {
-      image = "centos-cloud/centos-stream-9"
+      image = var.boot_image
     }
   }
 
