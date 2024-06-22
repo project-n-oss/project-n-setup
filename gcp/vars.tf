@@ -17,8 +17,8 @@ variable "project" {
 }
 
 variable "create_project" {
-  type      = bool
-  default   = true
+  type        = bool
+  default     = true
   description = "Create a new project? Otherwise use an existing project"
 }
 
@@ -46,6 +46,6 @@ variable "package_url" {
 
 variable "admin_server_instance_type" {
   type        = string
-  description = "URL of the Project N package to install on launch"
-  default = "n1-standard-1"
+  description = "The admin server's instance type"
+  default     = "n1-standard-1"
 }
