@@ -37,7 +37,7 @@ locals {
 
 module "admin-server" {
   source        = "./admin-server"
-  project       = local.project
+  project       = google_project.project_n.id
   zone          = local.zone
   instance_type = var.admin_server_instance_type
   package_url   = var.package_url
