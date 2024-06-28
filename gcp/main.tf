@@ -37,8 +37,9 @@ locals {
 
 module "admin-server" {
   source        = "./admin-server"
-  project       = google_project.project_n.id
+  project       = local.project
   zone          = local.zone
   instance_type = var.admin_server_instance_type
   package_url   = var.package_url
+  depends_on    = [google_project_service.compute]
 }
