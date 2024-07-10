@@ -26,7 +26,6 @@ echo $(ls -la /home/${var.ssh_username}) >> $log
 echo $(ls -la /home/${var.ssh_username}/.project-n) >> $log
 echo '{"default_platform":"gcp"}' > /home/${var.ssh_username}/.project-n/config 2>> $log
 sudo yum -y update
-sudo yum -y install ${var.package_url} 2>> $log
 sudo tee -a /etc/yum.repos.d/google-cloud-sdk.repo << EOM
 [google-cloud-cli]
 name=Google Cloud CLI
@@ -38,6 +37,8 @@ gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 EOM
 sudo dnf install -y google-cloud-cli 2>> $log
 sudo dnf install -y google-cloud-cli-gke-gcloud-auth-plugin 2>> $log
+# this should always be the last step, since the setup script uses this as the signal for setup completion
+sudo yum -y install ${var.package_url} 2>> $log
   EOF
   # labels, metadata, resource_policies, and tags are all set automatically, and may cause the server to be recreated.
   labels            = {}
