@@ -25,6 +25,6 @@ variable "profile" {
 
 variable "default_tag" {
   type        = string
-  default     = "Project N Infrastructure"
+  default     = "Granica Infrastructure"
   description = "Default tag for infrastructure created by terraform on AWS."
 }
